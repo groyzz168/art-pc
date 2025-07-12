@@ -1,0 +1,78 @@
+// 基于 Figma 设计的颜色变量
+$color-white: #FFFFFF;
+$color-black: #000000;
+$color-gray: #8B8B8B;
+$color-accent: #2FB9C5;
+$color-primary: #098289;
+$color-secondary: rgba(82, 46, 76, 0.9);
+
+// 渐变色
+$gradient-primary: linear-gradient(135deg, #02D8E5 0%, #A5629A 100%);
+$gradient-vector: linear-gradient(135deg, #01787F 0%, #02D8E5 100%);
+
+// 背景色
+$bg-glass: rgba(255, 255, 255, 0.1);
+$bg-dark: rgba(46, 46, 46, 0.57);
+$bg-form: rgba(255, 255, 255, 0.1);
+
+// 字体
+$font-primary: 'BioRhyme', serif;
+$font-secondary: 'BioRhyme Expanded', serif;
+$font-mono: 'Allerta Stencil', monospace;
+
+// 字体大小
+$font-size-xs: 12px;
+$font-size-sm: 14px;
+$font-size-md: 16px;
+$font-size-lg: 20px;
+$font-size-xl: 24px;
+$font-size-xxl: 26px;
+$font-size-xxxl: 36px;
+
+// 字体权重
+$font-weight-light: 200;
+$font-weight-normal: 300;
+$font-weight-medium: 400;
+$font-weight-bold: 700;
+$font-weight-black: 800;
+
+// 边框半径
+$border-radius-sm: 4px;
+$border-radius-md: 10px;
+$border-radius-lg: 15px;
+$border-radius-xl: 50px;
+$border-radius-xxl: 63px;
+
+// 阴影
+$shadow-glass: 0 8px 32px rgba(31, 38, 135, 0.37);
+$shadow-backdrop: 0 4px 8px rgba(0, 0, 0, 0.1);
+$shadow-card: 84px 33px 4px 0px rgba(165, 98, 154, 0.4), 94px -49px 4px 0px rgba(165, 98, 154, 0.1);
+
+// 模糊效果
+$blur-sm: blur(7.5px);
+$blur-md: blur(15.7px);
+$blur-lg: blur(17.6px);
+$blur-xl: blur(43.7px);
+
+// 边框
+$border-glass: 0.25px solid $color-white;
+$border-stroke: 0.5px solid $color-white;
+
+// 间距
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+$spacing-xxl: 48px;
+
+// 布局
+$container-width: 1920px;
+$container-height: 1080px;
+$sidebar-width: 488px;
+$content-width: 869px;
+
+// 过渡效果
+$transition-fast: 0.2s ease;
+$transition-normal: 0.3s ease;
+$transition-slow: 0.5s ease; 

@@ -1,0 +1,309 @@
+@import './variables.scss';
+
+// 引入 Google Fonts
+@import url('https://fonts.googleapis.com/css2?family=BioRhyme:wght@200;300;400;700;800&family=BioRhyme+Expanded:wght@200;300;400;700;800&family=Allerta+Stencil:wght@400&display=swap');
+
+// 全局重置
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  font-family: $font-primary;
+  color: $color-white;
+  background: $color-black;
+  overflow-x: hidden;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+// 全局字体设置
+body {
+  font-family: $font-primary;
+  font-weight: $font-weight-normal;
+  font-size: $font-size-lg;
+  line-height: 1.549;
+  color: $color-white;
+  background: $color-black;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// 标题样式
+h1, h2, h3, h4, h5, h6 {
+  font-family: $font-primary;
+  font-weight: $font-weight-bold;
+  line-height: 1.549;
+  color: $color-white;
+  margin: 0;
+}
+
+h1 {
+  font-size: $font-size-xxxl;
+}
+
+h2 {
+  font-size: $font-size-xxl;
+}
+
+h3 {
+  font-size: $font-size-xl;
+}
+
+h4 {
+  font-size: $font-size-lg;
+}
+
+h5 {
+  font-size: $font-size-md;
+}
+
+h6 {
+  font-size: $font-size-sm;
+}
+
+// 段落样式
+p {
+  font-family: $font-primary;
+  font-weight: $font-weight-normal;
+  font-size: $font-size-md;
+  line-height: 1.549;
+  color: $color-white;
+  margin: 0 0 16px 0;
+}
+
+// 链接样式
+a {
+  color: $color-accent;
+  text-decoration: none;
+  transition: $transition-normal;
+
+  &:hover {
+    color: lighten($color-accent, 10%);
+  }
+}
+
+// 按钮样式
+button {
+  font-family: $font-primary;
+  font-weight: $font-weight-medium;
+  cursor: pointer;
+  transition: $transition-normal;
+  border: none;
+  outline: none;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+// 输入框样式
+input, textarea {
+  font-family: $font-primary;
+  font-weight: $font-weight-normal;
+  outline: none;
+  transition: $transition-normal;
+
+  &:focus {
+    border-color: $color-accent;
+  }
+}
+
+// 图片样式
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+// 列表样式
+ul, ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+// 工具类
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.font-light {
+  font-weight: $font-weight-light;
+}
+
+.font-normal {
+  font-weight: $font-weight-normal;
+}
+
+.font-medium {
+  font-weight: $font-weight-medium;
+}
+
+.font-bold {
+  font-weight: $font-weight-bold;
+}
+
+.font-black {
+  font-weight: $font-weight-black;
+}
+
+.text-white {
+  color: $color-white;
+}
+
+.text-gray {
+  color: $color-gray;
+}
+
+.text-accent {
+  color: $color-accent;
+}
+
+.bg-glass {
+  background: $bg-glass;
+  backdrop-filter: $blur-md;
+  border: $border-glass;
+}
+
+.bg-dark {
+  background: $bg-dark;
+}
+
+.border-radius-sm {
+  border-radius: $border-radius-sm;
+}
+
+.border-radius-md {
+  border-radius: $border-radius-md;
+}
+
+.border-radius-lg {
+  border-radius: $border-radius-lg;
+}
+
+.border-radius-xl {
+  border-radius: $border-radius-xl;
+}
+
+.shadow-glass {
+  box-shadow: $shadow-glass;
+}
+
+.shadow-card {
+  box-shadow: $shadow-card;
+}
+
+// 动画类
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.slide-up {
+  animation: slideUp 0.5s ease-in-out;
+}
+
+.scale-in {
+  animation: scaleIn 0.3s ease-in-out;
+}
+
+// 动画定义
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+// 响应式工具类
+@media (max-width: 768px) {
+  .mobile-hidden {
+    display: none;
+  }
+  
+  .mobile-only {
+    display: block;
+  }
+}
+
+@media (min-width: 769px) {
+  .desktop-hidden {
+    display: none;
+  }
+  
+  .mobile-only {
+    display: none;
+  }
+}
+
+// 滚动条样式
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.5);
+  }
+}
+
+// 选择文本样式
+::selection {
+  background: $color-accent;
+  color: $color-white;
+}
+
+::-moz-selection {
+  background: $color-accent;
+  color: $color-white;
+} 
