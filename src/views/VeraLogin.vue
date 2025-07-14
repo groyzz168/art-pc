@@ -31,12 +31,18 @@
       <div class="login-form">
         <h3 class="form-title">Log in to VERA</h3>
         
+        <!-- 错误提示 -->
+        <div v-if="errorMessage" class="error-message">
+          {{ errorMessage }}
+        </div>
+        
         <div class="form-group">
           <input 
-            type="email" 
+            type="text" 
             placeholder="DID: Decentralized Identity"
             class="form-input"
             v-model="email"
+            :disabled="isLoading"
           />
         </div>
 
@@ -46,11 +52,19 @@
             placeholder="Password"
             class="form-input"
             v-model="password"
+            :disabled="isLoading"
           />
         </div>
 
         <div class="form-actions">
-          <button class="btn-login" @click="handleLogin">Log in</button>
+          <button 
+            class="btn-login" 
+            @click="handleLogin"
+            :disabled="isLoading"
+            :class="{ loading: isLoading }"
+          >
+            {{ isLoading ? 'Logging in...' : 'Log in' }}
+          </button>
           
           <div class="divider">
             <span class="divider-line"></span>
@@ -58,7 +72,7 @@
             <span class="divider-line"></span>
           </div>
 
-          <button class="btn-signup" @click="handleSignup">Get Your DID Identity</button>
+          <button class="btn-signup" @click="handleSignup" :disabled="isLoading">Get Your DID Identity</button>
         </div>
       </div>
     </div>
@@ -81,19 +95,42 @@ export default {
   data() {
     return {
       email: '',
-      password: ''
+      password: '',
+      errorMessage: '',
+      isLoading: false
     }
   },
   methods: {
     handleLogin() {
-      // 登录逻辑
-      console.log('Login:', this.email, this.password);
-      // 导航到首页
-      this.$router.push('/home');
+      // Clear previous error messages
+      this.errorMessage = '';
+      this.isLoading = true;
+
+      // Validate input
+      if (!this.email || !this.password) {
+        this.errorMessage = 'Please enter both username and password';
+        this.isLoading = false;
+        return;
+      }
+
+      // Validate default credentials
+      if (this.email === 'polly' && this.password === 'polly') {
+        // Login successful
+        console.log('Login successful');
+        setTimeout(() => {
+          this.isLoading = false;
+          this.$router.push('/home');
+        }, 1000);
+      } else {
+        // Login failed
+        this.errorMessage = 'Invalid username or password. Please use default credentials: polly';
+        this.isLoading = false;
+      }
     },
     handleSignup() {
-      // 注册逻辑
-      console.log('Signup clicked');
+      // Registration logic
+      console.log('Registration feature not available');
+      alert('Registration feature is not available. Please use default credentials: polly');
     }
   }
 }
@@ -269,6 +306,31 @@ export default {
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
   }
 
+  .error-message {
+    background: rgba(255, 82, 82, 0.2);
+    border: 1px solid rgba(255, 82, 82, 0.5);
+    border-radius: $border-radius-md;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    color: #ff5252;
+    font-family: $font-primary;
+    font-size: $font-size-md;
+    text-align: center;
+    backdrop-filter: blur(5px);
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   .form-group {
     display: flex;
     flex-direction: column;
@@ -289,6 +351,7 @@ export default {
     font-size: $font-size-lg;
     line-height: 1.549;
     box-sizing: border-box;
+    transition: all 0.3s ease;
 
     &::placeholder {
       color: rgba(255, 255, 255, 0.8);
@@ -299,6 +362,11 @@ export default {
       border-color: $color-accent;
       box-shadow: 0 0 0 2px rgba(47, 185, 197, 0.2);
       background: rgba(0, 0, 0, 0.4);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
     }
   }
 
@@ -323,12 +391,42 @@ export default {
     line-height: 1.549;
     cursor: pointer;
     transition: $transition-normal;
+    position: relative;
+    overflow: hidden;
 
-    &:hover {
+    &:hover:not(:disabled) {
       background: lighten($color-primary, 10%);
       transform: translateY(-2px);
       box-shadow: 0 10px 20px rgba(9, 130, 137, 0.3);
     }
+
+    &:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    &.loading {
+      &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 20px;
+        height: 20px;
+        margin-left: 80px;
+        margin-top: -10px;
+        border: 2px solid transparent;
+        border-top: 2px solid $color-white;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+    }
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
 
   .divider {
@@ -368,10 +466,16 @@ export default {
     transition: $transition-normal;
     backdrop-filter: blur(5px);
 
-    &:hover {
+    &:hover:not(:disabled) {
       background: rgba(82, 46, 76, 0.9);
       border-color: rgba(255, 255, 255, 0.4);
       transform: translateY(-2px);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
     }
   }
 }

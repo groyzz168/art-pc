@@ -11,16 +11,18 @@
     "lint": "eslint . --ext .vue,.js,.ts --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "lottie-web": "^5.13.0",
+    "three": "^0.178.0",
     "vue": "^3.3.4",
     "vue-router": "^4.2.4"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.3.4",
-    "vite": "^4.4.9",
-    "sass": "^1.66.1",
+    "@vue/eslint-config-prettier": "^8.0.0",
     "eslint": "^8.49.0",
     "eslint-plugin-vue": "^9.17.0",
-    "@vue/eslint-config-prettier": "^8.0.0",
-    "prettier": "^3.0.3"
+    "prettier": "^3.0.3",
+    "sass": "^1.66.1",
+    "vite": "^4.4.9"
   }
-} 
+}

@@ -11,12 +11,13 @@ export default defineConfig({
   },
   server: {
     port: 3000,
-    open: true
+    open: true,
+    host: true // 添加host配置以允许局域网访问
   },
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: `@import "@/styles/variables.scss";`
+        additionalData: `@use "@/styles/variables.scss" as *;`
       }
     }
   }
