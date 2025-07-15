@@ -155,79 +155,18 @@
 			<div class="trending-section">
 				<h3>What's happening</h3>
 				<div class="trending-items">
-					<div class="trending-item">
-						<div class="trending-image">
-							<img src="@/assets/right/d1facbaa8de0c18a05f824787ba3598d93fc0067.png" alt="Flamengo vs Bayern Munich" />
+					<div v-for="trend in trendingTopics" :key="trend.id" class="trending-item"
+						@click="selectTrend(trend)">
+						<div class="trending-image" v-if="trend.image">
+							<img src="@/assets/right/d1facbaa8de0c18a05f824787ba3598d93fc0067.png" :alt="trend.title" />
 						</div>
 						<div class="trending-content">
-							<div class="trending-title">Flamengo vs Bayern Munich</div>
-							<div class="trending-meta">42 minutes ago</div>
+							<div class="trending-category" v-if="trend.category">{{ trend.category }}</div>
+							<div class="trending-title">{{ trend.title }}</div>
+							<div class="trending-meta" v-html="formatTrendingMeta(trend.meta)"></div>
+							<div class="trending-meta" v-if="trend.posts" v-html="formatTrendingMeta(trend.posts)"></div>
 						</div>
-						<button class="more-options">
-							<svg width="16" height="4" viewBox="0 0 16 4" fill="none">
-								<circle cx="2" cy="2" r="1.5" fill="currentColor" />
-								<circle cx="8" cy="2" r="1.5" fill="currentColor" />
-								<circle cx="14" cy="2" r="1.5" fill="currentColor" />
-							</svg>
-						</button>
-					</div>
-
-					<div class="trending-item">
-						<div class="trending-content">
-							<div class="trending-category">Entertainment · Trending</div>
-							<div class="trending-title">The BBC</div>
-							<div class="trending-meta">Trending with <span style="color: #2FB9C5;">Shakira</span>, <span
-									style="color: #2FB9C5;">Helena</span></div>
-							<div class="trending-meta">653K posts</div>
-						</div>
-						<button class="more-options">
-							<svg width="16" height="4" viewBox="0 0 16 4" fill="none">
-								<circle cx="2" cy="2" r="1.5" fill="currentColor" />
-								<circle cx="8" cy="2" r="1.5" fill="currentColor" />
-								<circle cx="14" cy="2" r="1.5" fill="currentColor" />
-							</svg>
-						</button>
-					</div>
-
-					<div class="trending-item">
-						<div class="trending-content">
-							<div class="trending-category">Love Island UK· Trending</div>
-							<div class="trending-title">Glastonbury</div>
-							<div class="trending-meta">Trending with <span style="color: #2FB9C5;">Lulu</span>, <span
-									style="color: #2FB9C5;">Mick Hucknall</span></div>
-							<div class="trending-meta">30.9K posts</div>
-						</div>
-						<button class="more-options">
-							<svg width="16" height="4" viewBox="0 0 16 4" fill="none">
-								<circle cx="2" cy="2" r="1.5" fill="currentColor" />
-								<circle cx="8" cy="2" r="1.5" fill="currentColor" />
-								<circle cx="14" cy="2" r="1.5" fill="currentColor" />
-							</svg>
-						</button>
-					</div>
-
-					<div class="trending-item">
-						<div class="trending-content">
-							<div class="trending-category">Entertainment · Trending</div>
-							<div class="trending-title">#LoveIsland</div>
-							<div class="trending-meta">26K posts</div>
-						</div>
-						<button class="more-options">
-							<svg width="16" height="4" viewBox="0 0 16 4" fill="none">
-								<circle cx="2" cy="2" r="1.5" fill="currentColor" />
-								<circle cx="8" cy="2" r="1.5" fill="currentColor" />
-								<circle cx="14" cy="2" r="1.5" fill="currentColor" />
-							</svg>
-						</button>
-					</div>
-
-					<div class="trending-item">
-						<div class="trending-content">
-							<div class="trending-category">Entertainment · Trending</div>
-							<div class="trending-title">Rod Stewart</div>
-							<div class="trending-meta">26K posts</div>
-						</div>
-						<button class="more-options">
+						<button class="more-options" @click.stop="showTrendOptions(trend)">
 							<svg width="16" height="4" viewBox="0 0 16 4" fill="none">
 								<circle cx="2" cy="2" r="1.5" fill="currentColor" />
 								<circle cx="8" cy="2" r="1.5" fill="currentColor" />
@@ -313,6 +252,41 @@
 						handle: '@FranzVH',
 						avatar: userAvatar3,
 						isFollowing: false
+					}
+				],
+				trendingTopics: [{
+						id: 1,
+						title: 'Flamengo vs Bayern Munich',
+						meta: '42 minutes ago',
+						category: '',
+						image: true
+					},
+					{
+						id: 2,
+						title: 'The BBC',
+						meta: '268K posts',
+						category: 'Entertainment · Trending'
+					},
+					{
+						id: 3,
+						title: 'Glastonbury',
+						meta: 'Trending with The Prodigy,Olivia Rodrigo',
+						category: 'Entertainment · Trending',
+						posts: '653K posts'
+					},
+					{
+						id: 4,
+						title: '#LoveIsland',
+						meta: 'Trending with Shakira, Helena',
+						category: 'Love Island UK· Trending',
+						posts: '30.9K posts'
+					},
+					{
+						id: 5,
+						title: 'Rod Stewart',
+						meta: 'Trending with Lulu, Mick Hucknall',
+						category: 'Entertainment · Trending',
+						posts: '26K posts'
 					}
 				]
 			}
@@ -546,6 +520,21 @@
 			toggleFollow(user) {
 				user.isFollowing = !user.isFollowing
 			},
+			selectTrend(trend) {
+				console.log('Selected trend:', trend);
+				// 这里可以添加趋势详情页面跳转逻辑
+			},
+			showTrendOptions(trend) {
+				console.log('Show options for trend:', trend);
+				// 这里可以添加趋势选项菜单逻辑
+			},
+			formatTrendingMeta(meta) {
+				if (meta.includes('Trending with')) {
+					const [text, ...names] = meta.split('Trending with');
+					return `${text}Trending with <span style="color: #2FB9C5;">${names.join(' ')}</span>`;
+				}
+				return meta;
+			}
 		},
 
 		mounted() {
@@ -1472,6 +1461,10 @@
 					font-weight: 400;
 					font-family: 'BioRhyme', serif;
 					line-height: 1.3;
+					
+					:deep(span) {
+						color: #2FB9C5;
+					}
 				}
 			}
 
@@ -1498,7 +1491,7 @@
 		width: 100%;
 		background: none;
 		border: none;
-		color: #888888;
+		color: #2FB9C5;
 		padding: 20px 28px;
 		cursor: pointer;
 		font-size: 15px;

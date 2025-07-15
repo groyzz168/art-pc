@@ -207,6 +207,9 @@
 <script>
 import SidebarMenu from '@/components/SidebarMenu.vue'
 import avatar1 from '@/assets/figma/avatar/avatar1.jpg'
+import userAvatar1 from '@/assets/right/ff5df8a387941532dfba1a476259cb1f58b083c6.jpg'
+import userAvatar2 from '@/assets/right/e11d8650ead4662434056954faae2c4bbddba503.jpg'
+import userAvatar3 from '@/assets/right/1ce0ca3e3b6eb048fe749c4d1b8594eac7ba5b7b.jpg'
 
 export default {
 	name: 'Profile',
@@ -281,21 +284,21 @@ export default {
 					id: 1,
 					name: 'Angela Rayner',
 					handle: '@AngelaRayner',
-					avatar: avatar1,
+					avatar: userAvatar1,
 					isFollowing: false
 				},
 				{
 					id: 2,
 					name: 'Big Hims',
 					handle: '@BigHims',
-					avatar: avatar1,
+					avatar: userAvatar2,
 					isFollowing: false
 				},
 				{
 					id: 3,
 					name: 'Franz von Holzhausen',
 					handle: '@FranzVH',
-					avatar: avatar1,
+					avatar: userAvatar3,
 					isFollowing: false
 				}
 			],

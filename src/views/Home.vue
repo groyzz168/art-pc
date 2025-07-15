@@ -160,108 +160,34 @@
 			</div>
 
 			<!-- 右侧边栏 -->
-			<div class="right-sidebar">
+			<div class="sidebar-right">
 				<!-- 搜索框 -->
-				<div class="search-container">
-					<div class="search-box">
-						<svg class="search-icon" width="26" height="26" viewBox="0 0 26 26" fill="none">
-							<path
-								d="M11.9583 21.6667C17.4811 21.6667 21.9583 17.1895 21.9583 11.6667C21.9583 6.14385 17.4811 1.66667 11.9583 1.66667C6.43547 1.66667 1.95833 6.14385 1.95833 11.6667C1.95833 17.1895 6.43547 21.6667 11.9583 21.6667Z"
-								stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-							<path d="M24.125 24.3333L18.7083 19" stroke="currentColor" stroke-width="2"
-								stroke-linecap="round" stroke-linejoin="round" />
+				<div class="search-section">
+					<div class="search-container">
+						<svg class="search-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+							<path d="M19 19L13 13M15 8A7 7 0 1 1 1 8A7 7 0 0 1 15 8Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 						</svg>
 						<input type="text" class="search-input" placeholder="Search" v-model="searchQuery"
 							@input="handleSearch" />
 					</div>
 				</div>
 
-				<!-- What's happening 卡片 -->
-				<div class="card">
-					<div class="card-header">
-						<h3>What's happening</h3>
-					</div>
-					<div class="card-content">
-						<!-- Flamengo vs Bayern Munich -->
-						<div class="trending-item">
-							<div class="trending-image">
-								<img src="@/assets/right/d1facbaa8de0c18a05f824787ba3598d93fc0067.png" alt="Flamengo vs Bayern Munich" />
+				<!-- What's happening -->
+				<div class="trending-section">
+					<h3>What's happening</h3>
+					<div class="trending-items">
+						<div v-for="trend in trendingTopics" :key="trend.id" class="trending-item"
+							@click="selectTrend(trend)">
+							<div class="trending-image" v-if="trend.image">
+								<img src="@/assets/right/d1facbaa8de0c18a05f824787ba3598d93fc0067.png" :alt="trend.title" />
 							</div>
 							<div class="trending-content">
-								<div class="trending-title">Flamengo vs Bayern Munich</div>
-								<div class="trending-time">42 minutes ago</div>
+								<div class="trending-category" v-if="trend.category">{{ trend.category }}</div>
+								<div class="trending-title">{{ trend.title }}</div>
+								<div class="trending-meta" v-html="formatTrendingMeta(trend.meta)"></div>
+								<div class="trending-meta" v-if="trend.posts" v-html="formatTrendingMeta(trend.posts)"></div>
 							</div>
-							<button class="more-options">
-								<svg width="16" height="4" viewBox="0 0 16 4" fill="none">
-									<circle cx="2" cy="2" r="1.5" fill="currentColor" />
-									<circle cx="8" cy="2" r="1.5" fill="currentColor" />
-									<circle cx="14" cy="2" r="1.5" fill="currentColor" />
-								</svg>
-							</button>
-						</div>
-
-						<!-- The BBC -->
-						<div class="trending-item">
-							<div class="trending-content">
-								<div class="trending-category">Entertainment Trending</div>
-								<div class="trending-title">The BBC</div>
-								<div class="trending-posts">268K posts</div>
-							</div>
-							<button class="more-options">
-								<svg width="16" height="4" viewBox="0 0 16 4" fill="none">
-									<circle cx="2" cy="2" r="1.5" fill="currentColor" />
-									<circle cx="8" cy="2" r="1.5" fill="currentColor" />
-									<circle cx="14" cy="2" r="1.5" fill="currentColor" />
-								</svg>
-							</button>
-						</div>
-
-						<!-- Glastonbury -->
-						<div class="trending-item">
-							<div class="trending-content">
-								<div class="trending-category">Entertainment Trending</div>
-								<div class="trending-title">Glastonbury</div>
-								<div class="trending-subtitle">Trending with <span class="highlight">The Prodigy</span>,
-									<span class="highlight">Olivia Rodrigo</span></div>
-								<div class="trending-posts">653K posts</div>
-							</div>
-							<button class="more-options">
-								<svg width="16" height="4" viewBox="0 0 16 4" fill="none">
-									<circle cx="2" cy="2" r="1.5" fill="currentColor" />
-									<circle cx="8" cy="2" r="1.5" fill="currentColor" />
-									<circle cx="14" cy="2" r="1.5" fill="currentColor" />
-								</svg>
-							</button>
-						</div>
-
-						<!-- #LoveIsland -->
-						<div class="trending-item">
-							<div class="trending-content">
-								<div class="trending-category">Love Island UK· Trending</div>
-								<div class="trending-title">#LoveIsland</div>
-								<div class="trending-subtitle">Trending with <span class="highlight">Shakira</span>,
-									<span class="highlight">Helena</span></div>
-								<div class="trending-posts">30.9K posts</div>
-							</div>
-							<button class="more-options">
-								<svg width="16" height="4" viewBox="0 0 16 4" fill="none">
-									<circle cx="2" cy="2" r="1.5" fill="currentColor" />
-									<circle cx="8" cy="2" r="1.5" fill="currentColor" />
-									<circle cx="14" cy="2" r="1.5" fill="currentColor" />
-								</svg>
-							</button>
-						</div>
-
-						<!-- Rod Stewart -->
-						<div class="trending-item">
-							<div class="trending-content">
-								<div class="trending-category">Entertainment · Trending</div>
-								<div class="trending-title">Rod Stewart</div>
-								<div class="trending-subtitle">Trending with <span class="highlight">Lulu</span>, <span
-										class="highlight">Mick Hucknall</span></div>
-								<div class="trending-posts">26K posts</div>
-							</div>
-							<button class="more-options">
+							<button class="more-options" @click.stop="showTrendOptions(trend)">
 								<svg width="16" height="4" viewBox="0 0 16 4" fill="none">
 									<circle cx="2" cy="2" r="1.5" fill="currentColor" />
 									<circle cx="8" cy="2" r="1.5" fill="currentColor" />
@@ -277,8 +203,8 @@
 								<div class="trending-content">
 									<div class="trending-category">{{ item.category }}</div>
 									<div class="trending-title">{{ item.title }}</div>
-									<div class="trending-subtitle" v-if="item.subtitle">{{ item.subtitle }}</div>
-									<div class="trending-posts">{{ item.posts }}</div>
+									<div class="trending-meta" v-if="item.subtitle" v-html="formatTrendingMeta(item.subtitle)"></div>
+									<div class="trending-meta">{{ item.posts }}</div>
 								</div>
 								<button class="more-options">
 									<svg width="16" height="4" viewBox="0 0 16 4" fill="none">
@@ -289,21 +215,16 @@
 								</button>
 							</div>
 						</transition-group>
-
-						<div class="show-more">
-							<button class="show-more-btn" @click="toggleShowMoreTrending">
-								{{ showMoreTrending ? 'Show less' : 'Show More' }}
-							</button>
-						</div>
 					</div>
+					<button class="show-more-btn" @click="toggleShowMoreTrending">
+						{{ showMoreTrending ? 'Show less' : 'Show More' }}
+					</button>
 				</div>
 
-				<!-- Who to follow 卡片 -->
-				<div class="card">
-					<div class="card-header">
-						<h3>Who to follow</h3>
-					</div>
-					<div class="card-content">
+				<!-- Who to follow -->
+				<div class="follow-section">
+					<h3>Who to follow</h3>
+					<div class="follow-suggestions">
 						<div v-for="user in suggestedUsers" :key="user.id" class="follow-item">
 							<div class="follow-avatar">
 								<img :src="user.avatar" :alt="user.name" />
@@ -312,7 +233,7 @@
 								<div class="follow-name">{{ user.name }}</div>
 								<div class="follow-handle">{{ user.handle }}</div>
 							</div>
-							<button class="follow-btn" @click="toggleFollow(user)"
+							<button class="follow-button" @click="toggleFollow(user)"
 								:class="{ following: user.isFollowing }">
 								{{ user.isFollowing ? 'Following' : 'Follow' }}
 							</button>
@@ -329,18 +250,12 @@
 									<div class="follow-name">{{ item.name }}</div>
 									<div class="follow-handle">{{ item.handle }}</div>
 								</div>
-								<button class="follow-btn" @click="toggleFollow(item)"
+								<button class="follow-button" @click="toggleFollow(item)"
 									:class="{ following: item.isFollowing }">
 									{{ item.isFollowing ? 'Following' : 'Follow' }}
 								</button>
 							</div>
 						</transition-group>
-
-						<div class="show-more">
-							<button class="show-more-btn" @click="toggleShowMoreFollowing">
-								{{ showMoreFollowing ? 'Show less' : 'Show more' }}
-							</button>
-						</div>
 					</div>
 				</div>
 			</div>
@@ -426,6 +341,41 @@
 						avatar: userAvatar3,
 						isFollowing: false
 					}
+				],
+				trendingTopics: [{
+						id: 1,
+						title: 'Flamengo vs Bayern Munich',
+						meta: '42 minutes ago',
+						category: '',
+						image: true
+					},
+					{
+						id: 2,
+						title: 'The BBC',
+						meta: '268K posts',
+						category: 'Entertainment · Trending'
+					},
+					{
+						id: 3,
+						title: 'Glastonbury',
+						meta: 'Trending with The Prodigy,Olivia Rodrigo',
+						category: 'Entertainment · Trending',
+						posts: '653K posts'
+					},
+					{
+						id: 4,
+						title: '#LoveIsland',
+						meta: 'Trending with Shakira, Helena',
+						category: 'Love Island UK· Trending',
+						posts: '30.9K posts'
+					},
+					{
+						id: 5,
+						title: 'Rod Stewart',
+						meta: 'Trending with Lulu, Mick Hucknall',
+						category: 'Entertainment · Trending',
+						posts: '26K posts'
+					}
 				]
 			}
 		},
@@ -459,6 +409,21 @@
 			toggleFollow(user) {
 				user.isFollowing = !user.isFollowing
 			},
+			selectTrend(trend) {
+				console.log('Selected trend:', trend);
+				// 这里可以添加点击趋势项的逻辑，例如跳转到相关帖子列表
+			},
+			showTrendOptions(trend) {
+				console.log('Trend options for:', trend);
+				// 这里可以添加显示趋势选项的逻辑
+			},
+			formatTrendingMeta(meta) {
+				if (meta.includes('Trending with')) {
+					const [text, ...names] = meta.split('Trending with');
+					return `${text}Trending with <span style="color: #2FB9C5;">${names.join(' ')}</span>`;
+				}
+				return meta;
+			}
 		}
 	}
 </script>
@@ -824,334 +789,253 @@
 		}
 	}
 
-	.right-sidebar {
+	.sidebar-right {
 		width: 26%;
-		height: 100vh;
-		padding: 20px 0px 48px 0;
+		padding: 20px 20px 48px 0;
 		position: fixed;
 		right: 0;
 		top: 0;
+		height: 100vh;
 		overflow-y: auto;
-		overflow-x: hidden;
 		background: transparent;
-		display: flex;
-		flex-direction: column;
-		gap: 24px;
-		scroll-behavior: smooth;
-		scrollbar-width: none;
-		/* Firefox */
-		-ms-overflow-style: none;
-		/* IE and Edge */
+	}
 
-		/* 隐藏 WebKit 滚动条 */
-		&::-webkit-scrollbar {
-			display: none;
-			width: 0;
-			height: 0;
-		}
-
-		&::-webkit-scrollbar-track {
-			background: transparent;
-		}
-
-		&::-webkit-scrollbar-thumb {
-			background: transparent;
-		}
-
+	.search-section {
+		margin-bottom: 24px;
+		
 		.search-container {
-			padding: 0 24px;
-
-			.search-box {
-				position: relative;
-				width: 100%;
-				height: 50px;
-				background: $bg-glass;
-				border: $border-glass;
-				border-radius: $border-radius-xxl;
-				backdrop-filter: blur(8.6px);
-				display: flex;
-				align-items: center;
-				padding: 0 20px;
-				gap: 16px;
-
-				.search-input {
-					flex: 1;
-					background: transparent;
-					border: none;
-					color: $color-white;
-					font-family: $font-primary;
-					font-weight: $font-weight-medium;
-					font-size: $font-size-lg;
-					line-height: 1.549;
-					outline: none;
-
-					&::placeholder {
-						color: $color-white;
-						opacity: 0.7;
-					}
-				}
-
-				.search-icon {
-					width: 26px;
-					height: 26px;
-					color: $color-white;
+			position: relative;
+			background: rgba(255, 255, 255, 0.1);
+			border: 0.25px solid #FFFFFF;
+			border-radius: 25px;
+			padding: 12px 20px;
+			display: flex;
+			align-items: center;
+			backdrop-filter: blur(15.7px);
+			transition: all 0.2s ease;
+			
+			&:focus-within {
+				background: rgba(255, 255, 255, 0.15);
+				border-color: #2FB9C5;
+			}
+			
+			.search-icon {
+				color: rgba(255, 255, 255, 0.6);
+				margin-right: 12px;
+				flex-shrink: 0;
+			}
+			
+			.search-input {
+				flex: 1;
+				background: none;
+				border: none;
+				outline: none;
+				color: #FFFFFF;
+				font-size: 16px;
+				font-family: 'BioRhyme', serif;
+				
+				&::placeholder {
+					color: rgba(255, 255, 255, 0.6);
 				}
 			}
 		}
+	}
 
-		.card {
-			margin-right: 24px;
-			background: $bg-glass;
-			border: $border-glass;
-			border-radius: $border-radius-lg;
-			backdrop-filter: $blur-md;
-			overflow: hidden;
-			max-height: none;
-			flex-shrink: 0;
+	.trending-section,
+	.follow-section {
+		background: rgba(255, 255, 255, 0.1);
+		border: 0.25px solid #FFFFFF;
+		border-radius: 15px;
+		margin-bottom: 24px;
+		overflow: hidden;
+		backdrop-filter: blur(15.7px);
 
-			.card-header {
-				padding: 20px 28px;
+		h3 {
+			font-size: 20px;
+			font-weight: 700;
+			padding: 20px 28px;
+			margin: 0;
+			color: #FFFFFF;
+			font-family: 'BioRhyme', serif;
+			letter-spacing: -0.3px;
+		}
+	}
 
+	.trending-items {
+		.trending-item {
+			display: flex;
+			align-items: flex-start;
+			padding: 20px 28px;
+			cursor: pointer;
+			transition: all 0.2s ease;
+			border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 
-				h3 {
-					font-family: $font-primary;
-					font-weight: $font-weight-medium;
-					font-size: $font-size-xl;
-					line-height: 1.549;
-					color: $color-white;
-					margin: 0;
+			&:last-child {
+				border-bottom: none;
+			}
+
+			&:hover {
+				background: rgba(255, 255, 255, 0.05);
+			}
+
+			.trending-image {
+				width: 49px;
+				height: 49px;
+				border-radius: 8px;
+				overflow: hidden;
+				margin-right: 12px;
+				flex-shrink: 0;
+				border: 1px solid rgba(255, 255, 255, 0.1);
+
+				img {
+					width: 100%;
+					height: 100%;
+					object-fit: cover;
 				}
 			}
 
-			.card-content {
-				padding: 20px 28px;
-				overflow-y: auto;
-				overflow-x: hidden;
-				scrollbar-width: none;
-				/* Firefox */
-				-ms-overflow-style: none;
-				/* IE and Edge */
-				scroll-behavior: smooth;
+			.trending-content {
+				flex: 1;
+				min-width: 0;
 
-				/* 隐藏 WebKit 滚动条 */
-				&::-webkit-scrollbar {
-					display: none;
-					width: 0;
+				.trending-category {
+					color: rgba(255, 255, 255, 0.5);
+					font-size: 13px;
+					font-weight: 400;
+					margin-bottom: 2px;
+					font-family: 'BioRhyme', serif;
+					line-height: 1.3;
 				}
 
-				&::-webkit-scrollbar-track {
-					background: transparent;
+				.trending-title {
+					font-weight: 700;
+					font-size: 15px;
+					color: #FFFFFF;
+					margin-bottom: 2px;
+					font-family: 'BioRhyme', serif;
+					line-height: 1.3;
+					letter-spacing: -0.2px;
 				}
 
-				&::-webkit-scrollbar-thumb {
-					background: transparent;
-				}
-
-				.trending-item {
-					display: flex;
-					align-items: flex-start;
-					padding: 12px 16px;
-					cursor: pointer;
-					transition: all 0.2s ease;
-					border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-
-					&:last-child {
-						border-bottom: none;
+				.trending-meta {
+					color: rgba(255, 255, 255, 0.5);
+					font-size: 13px;
+					margin-bottom: 0;
+					font-weight: 400;
+					font-family: 'BioRhyme', serif;
+					line-height: 1.3;
+					
+					:deep(span) {
+						color: #2FB9C5;
 					}
+				}
+			}
 
+			.more-options {
+				background: none;
+				border: none;
+				color: rgba(255, 255, 255, 0.5);
+				cursor: pointer;
+				padding: 4px;
+				border-radius: 50%;
+				transition: all 0.2s ease;
+				margin-top: 2px;
+				flex-shrink: 0;
+
+				&:hover {
+					background: rgba(255, 255, 255, 0.1);
+					color: rgba(255, 255, 255, 0.8);
+				}
+			}
+		}
+	}
+
+	.show-more-btn {
+		width: 100%;
+		background: none;
+		border: none;
+		color: #2FB9C5;
+		padding: 20px 28px;
+		cursor: pointer;
+		font-size: 15px;
+		font-weight: 400;
+		transition: all 0.2s ease;
+		font-family: 'BioRhyme', serif;
+		text-align: left;
+		border-top: 1px solid rgba(255, 255, 255, 0.08);
+
+		&:hover {
+			background: rgba(255, 255, 255, 0.05);
+		}
+	}
+
+	.follow-suggestions {
+		.follow-item {
+			display: flex;
+			align-items: center;
+			padding: 18px 24px;
+
+			.follow-avatar {
+				width: 44px;
+				height: 44px;
+				border-radius: 50%;
+				overflow: hidden;
+				margin-right: 14px;
+				border: 0.5px solid rgba(255, 255, 255, 0.2);
+
+				img {
+					width: 100%;
+					height: 100%;
+					object-fit: cover;
+				}
+			}
+
+			.follow-info {
+				flex: 1;
+
+				.follow-name {
+					font-weight: 700;
+					font-size: 16px;
+					color: #FFFFFF;
+					margin-bottom: 3px;
+					font-family: 'BioRhyme', serif;
+					letter-spacing: 0.3px;
+				}
+
+				.follow-handle {
+					color: rgba(255, 255, 255, 0.65);
+					font-size: 14px;
+					font-weight: 400;
+					font-family: 'BioRhyme', serif;
+				}
+			}
+			
+			.follow-button {
+				width: 89px;
+				height: 35px;
+				background: #000;
+				border: none;
+				border-radius: 20px;
+				color: #FFFFFF;
+				font-family: 'BioRhyme', serif;
+				font-weight: 600;
+				font-size: 14px;
+				cursor: pointer;
+				transition: all 0.2s ease;
+			
+				&:hover {
+					background: #333;
+					transform: translateY(-2px);
+				}
+				
+				&.following {
+					background: rgba(255, 255, 255, 0.1);
+					border: 1px solid rgba(255, 255, 255, 0.3);
+				
 					&:hover {
-						background: rgba(255, 255, 255, 0.05);
-					}
-
-					.trending-image {
-						width: 49px;
-						height: 49px;
-						border-radius: 8px;
-						overflow: hidden;
-						margin-right: 12px;
-						flex-shrink: 0;
-						border: 1px solid rgba(255, 255, 255, 0.1);
-
-						img {
-							width: 100%;
-							height: 100%;
-							object-fit: cover;
-						}
-					}
-
-					.trending-content {
-						flex: 1;
-						min-width: 0;
-
-						.trending-category {
-							color: rgba(255, 255, 255, 0.5);
-							font-size: 13px;
-							font-weight: 400;
-							margin-bottom: 2px;
-							font-family: 'BioRhyme', serif;
-							line-height: 1.3;
-						}
-
-						.trending-title {
-							font-weight: 700;
-							font-size: 15px;
-							color: #FFFFFF;
-							margin-bottom: 2px;
-							font-family: 'BioRhyme', serif;
-							line-height: 1.3;
-							letter-spacing: -0.2px;
-						}
-
-						.trending-time {
-							color: rgba(255, 255, 255, 0.5);
-							font-size: 13px;
-							font-weight: 400;
-							font-family: 'BioRhyme', serif;
-							line-height: 1.3;
-						}
-
-						.trending-subtitle {
-							font-family: 'BioRhyme', serif;
-							font-weight: 400;
-							font-size: 13px;
-							line-height: 1.3;
-							color: rgba(255, 255, 255, 0.5);
-							margin-bottom: 2px;
-
-							.highlight {
-								color: #2FB9C5;
-							}
-						}
-
-						.trending-posts {
-							color: rgba(255, 255, 255, 0.5);
-							font-size: 13px;
-							margin-bottom: 0;
-							font-weight: 400;
-							font-family: 'BioRhyme', serif;
-							line-height: 1.3;
-						}
-					}
-
-					.more-options {
-						background: none;
-						border: none;
-						color: rgba(255, 255, 255, 0.5);
-						cursor: pointer;
-						padding: 4px;
-						border-radius: 50%;
-						transition: all 0.2s ease;
-						margin-top: 2px;
-						flex-shrink: 0;
-
-						&:hover {
-							background: rgba(255, 255, 255, 0.1);
-							color: rgba(255, 255, 255, 0.8);
-						}
-					}
-				}
-
-				.follow-item {
-					display: flex;
-					align-items: center;
-					gap: 16px;
-					margin-bottom: 16px;
-					padding-bottom: 16px;
-					border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-
-					&:last-child {
-						border-bottom: none;
-						margin-bottom: 0;
-					}
-
-					.follow-avatar {
-						width: 49px;
-						height: 49px;
-						border-radius: 50%;
-						overflow: hidden;
-
-						img {
-							width: 100%;
-							height: 100%;
-							object-fit: cover;
-						}
-					}
-
-					.follow-info {
-						flex: 1;
-
-						.follow-name {
-							font-family: $font-primary;
-							font-weight: $font-weight-medium;
-							font-size: $font-size-md;
-							line-height: 1.549;
-							color: $color-white;
-							margin-bottom: 4px;
-						}
-
-						.follow-handle {
-							font-family: $font-primary;
-							font-weight: $font-weight-medium;
-							font-size: $font-size-sm;
-							line-height: 1.549;
-							color: $color-gray;
-						}
-					}
-
-					.follow-btn {
-						width: 89px;
-						height: 35px;
-						background: $color-black;
-						border: none;
-						border-radius: $border-radius-xl;
-						color: $color-white;
-						font-family: $font-primary;
-						font-weight: $font-weight-medium;
-						font-size: $font-size-md;
-						line-height: 1.549;
-						cursor: pointer;
-						transition: $transition-normal;
-
-						&:hover {
-							background: lighten($color-black, 20%);
-							transform: translateY(-2px);
-						}
-						
-						&.following {
-							background: rgba(255, 255, 255, 0.1);
-							border-color: rgba(255, 255, 255, 0.3);
-						
-							&:hover {
-								background: rgba(244, 33, 46, 0.2);
-								border-color: #f4212e;
-								color: #f4212e;
-							}
-						}
-					}
-				}
-
-				.show-more {
-					text-align: left;
-					margin-top: 16px;
-
-					.show-more-btn {
-						background: transparent;
-						border: none;
-						color: $color-accent;
-						font-family: $font-primary;
-						font-weight: $font-weight-medium;
-						font-size: $font-size-sm;
-						line-height: 1.549;
-						cursor: pointer;
-						transition: $transition-normal;
-						padding: 8px 16px;
-						border-radius: 4px;
-
-						&:hover {
-							color: lighten($color-accent, 10%);
-							background: rgba(47, 185, 197, 0.1);
-							padding: 8px 12px;
-						}
+						background: rgba(244, 33, 46, 0.2);
+						border-color: #f4212e;
+						color: #f4212e;
 					}
 				}
 			}
@@ -1184,7 +1068,7 @@
 					/* 桌面端特定样式 */
 				}
 
-				.right-sidebar {
+				.sidebar-right {
 					/* 桌面端特定样式 */
 				}
 			}

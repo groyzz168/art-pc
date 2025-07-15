@@ -218,21 +218,21 @@ export default {
 					title: 'Glastonbury',
 					meta: 'Trending with The Prodigy,Olivia Rodrigo',
 					category: 'Entertainment · Trending',
-					posts: '268K posts',
+					posts: '653K posts',
 				},
 				{
 					id: 4,
 					title: '#LoveIsland',
 					meta: 'Trending with Shakira, Helena',
 					category: 'Love Island UK· Trending',
-					posts: '268K posts',
+					posts: '30.9K posts',
 				},
 				{
 					id: 5,
 					title: 'Rod Stewart',
 					meta: 'Trending with Lulu, Mick Hucknall',
 					category: 'Entertainment · Trending',
-					posts: '268K posts',
+					posts: '26K posts',
 				}
 			],
 			suggestedUsers: [{
