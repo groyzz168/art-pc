@@ -130,7 +130,7 @@ export default {
     handleSignup() {
       // Registration logic
       console.log('Registration feature not available');
-      alert('Registration feature is not available. Please use default credentials: polly');
+	  this.errorMessage = 'Registration feature is not available. Please use default credentials: polly';
     }
   }
 }

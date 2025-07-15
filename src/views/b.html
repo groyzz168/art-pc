@@ -1,0 +1,32 @@
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<script src="https://cdn.tailwindcss.com"></script>
+        <script src="AestheticFluidBg.min.js"></script>
+		<title>Demo color4bg.js</title>
+		<style>
+			.box{
+				scale: 0.1;
+			}
+		</style>
+	</head>
+	
+	<body>
+		<div id="box" class="relative flex items-center justify-center w-full h-full bg-gray-100 rounded-2xl overflow-hidden">
+				</div>
+
+		<script>
+			
+
+			let colorbg = new Color4Bg.AestheticFluidBg({
+				dom: "box",
+				colors: ["#4C1189","#D54646","#489B92","#0D0D0D","#684B46","#76A8BA"],
+				seed: 71502,
+				loop: true
+			})
+			colorbg.update('scale', 0.04)
+			
+		</script>
+	</body>
+</html>

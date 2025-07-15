@@ -26,10 +26,15 @@
 				@user-profile-click="handleUserProfileClick" 
 			/>
 		</transition>
-
+		
 		<!-- 右侧披萨区域 -->
 		<div class="pizza-section" :class="{ 'sidebar-hidden': !sidebarVisible }">
-			<div class="pizza-container" @click="handleContainerClick">
+			<div class="pizza-container">
+				<!-- 左侧文字 -->
+				<div class="left-text-content" v-if="selectedSlice !== null" :style="getLeftTextStyle()">
+					<h2>{{getSliceLeftContent(selectedSlice)}}</h2>
+				</div>
+				
 				<!-- SVG 圆形扇形 -->
 				<svg class="pizza-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
 					<g v-if="showPizzaSlices">
@@ -49,31 +54,44 @@
 				</svg>
 				
 				<!-- 选中弹窗 -->
-				<transition name="popup" appear>
-					<div 
-						v-if="selectedSlice !== null"
-						class="selection-popup"
-						:style="getPopupStyle()"
-						@click.stop
-					>
-						<div class="popup-content">
-							<div class="popup-header">
-								<h3>{{ getSliceTitle(selectedSlice) }}</h3>
-								<span class="popup-close" @click="closePopup">×</span>
+				<div 
+					v-if="selectedSlice !== null"
+					class="selection-popup"
+					:style="getPopupStyle()"
+					@click.stop
+				>
+					<!-- 右侧弹窗内容 -->
+					<div class="popup-content">
+						<div class="popup-header">
+							<h3>{{ getSliceTitle(selectedSlice) }} </h3>
+							<div class="popup-actions">
+								<button 
+									class="popup-more-btn" 
+									@click.stop="togglePopupExpanded"
+									@mouseenter="() => console.log('Button hovered')"
+									:class="{ 'expanded': popupExpanded }"
+								>
+									<span class="dot"></span>
+									<span class="dot"></span>
+									<span class="dot"></span>
+								</button>
+								<span class="popup-close" @click.stop="closePopup">×</span>
 							</div>
-							<div class="popup-body">
+						</div>
+						<transition name="popup-expand">
+							<div v-if="popupExpanded" class="popup-body">
 								<div class="popup-description">
-									<p>In early July 2025, the UK Government launched "a new era for the NHS," extending local "neighbourhood" health hubs—open up to 12 hours a day, six days a week—to bring diagnostics, rehab and social support closer to patients' homes.</p>
+									<p>{{getSliceContent(selectedSlice)}}</p>
 								</div>
 								<div class="popup-actions">
-									<button class="popup-btn primary" @click="exploreSlice(selectedSlice)">
+									<button class="popup-btn primary" @click.stop="exploreSlice(selectedSlice)">
 										Learn More
 									</button>
 								</div>
 							</div>
-						</div>
+						</transition>
 					</div>
-				</transition>
+				</div>
 				
 				<!-- 图片云 -->
 				<div class="image-cloud">
@@ -127,7 +145,8 @@ export default {
 			showPizzaSlices: true, // 控制扇形显示隐藏的属性
 			hoveredSlice: null, // 追踪当前hover的扇形区域
 			selectedSlice: null, // 追踪当前选中的扇形区域
-			sidebarVisible: false // 控制左侧栏显示隐藏
+			sidebarVisible: false, // 控制左侧栏显示隐藏
+			popupExpanded: false // 控制弹窗展开/收起
 		}
 	},
 	computed: {
@@ -138,7 +157,6 @@ export default {
 	},
 	watch: {
 		hoveredSlice(newVal, oldVal) {
-			console.log('hoveredSlice changed from', oldVal, 'to', newVal)
 			// 强制重新计算所有图片样式
 			this.$forceUpdate()
 		}
@@ -156,7 +174,6 @@ export default {
 		
 		handleNavClick(navName) {
 			this.activeNavItem = navName
-			console.log('Navigation clicked:', navName)
 		},
 		handlePostClick() {
 			console.log('POST button clicked')
@@ -171,12 +188,10 @@ export default {
 			// 设置当前hover的扇形区域
 			if (isHover) {
 				this.hoveredSlice = index
-				console.log('Slice hovered - index:', index, 'hoveredSlice:', this.hoveredSlice)
 			} else {
 				// 只有当前hover的扇形离开时才清除hoveredSlice
 				if (this.hoveredSlice === index) {
 					this.hoveredSlice = null
-					console.log('Slice unhovered - hoveredSlice:', this.hoveredSlice)
 				}
 			}
 		},
@@ -186,22 +201,26 @@ export default {
 			
 			// 如果点击的是当前已选中的扇形，则取消选中
 			if (this.selectedSlice === index) {
-				this.selectedSlice = null
-				console.log('Clicked same slice, closing popup')
+				// this.selectedSlice = null
+				// this.popupExpanded = false
+				// console.log('Clicked same slice, closing popup')
 				return
 			}
 			
 			// 如果当前有弹窗显示，先隐藏再显示新的
 			if (this.selectedSlice !== null) {
 				this.selectedSlice = null
+				this.popupExpanded = false
 				// 使用 nextTick 确保DOM更新后再显示新弹窗
 				this.$nextTick(() => {
 					this.selectedSlice = index
+					this.popupExpanded = false
 					console.log('Switched to slice:', index)
 				})
 			} else {
 				// 如果没有弹窗，直接显示
 				this.selectedSlice = index
+				this.popupExpanded = false
 				console.log('Opened popup for slice:', index)
 			}
 		},
@@ -210,6 +229,7 @@ export default {
 			event.stopPropagation()
 			// 点击容器时关闭弹窗
 			this.selectedSlice = null
+			this.popupExpanded = false
 			console.log('Container clicked, closing popup')
 		},
 		handleImageHover(index, isHover) {
@@ -236,6 +256,7 @@ export default {
 			// 如果点击的图片属于当前已选中的扇形，则取消选中
 			if (this.selectedSlice === image.slice) {
 				this.selectedSlice = null
+				this.popupExpanded = false
 				console.log('Clicked image in same slice, closing popup')
 				return
 			}
@@ -243,14 +264,17 @@ export default {
 			// 如果当前有弹窗显示，先隐藏再显示新的
 			if (this.selectedSlice !== null) {
 				this.selectedSlice = null
+				this.popupExpanded = false
 				// 使用 nextTick 确保DOM更新后再显示新弹窗
 				this.$nextTick(() => {
 					this.selectedSlice = image.slice
+					this.popupExpanded = false
 					console.log('Switched to slice via image:', image.slice)
 				})
 			} else {
 				// 如果没有弹窗，直接显示
 				this.selectedSlice = image.slice
+				this.popupExpanded = false
 				console.log('Opened popup for slice via image:', image.slice)
 			}
 		},
@@ -570,42 +594,86 @@ export default {
 			}
 		},
 		getPopupStyle() {
-			if (this.selectedSlice === null) return {}
-
-			const slice = this.pizzaSlices[this.selectedSlice]
-			
-			// 计算扇形的中心角度
-			const centerAngle = (slice.startAngle + slice.endAngle) / 2
-			const centerAngleRad = (centerAngle * Math.PI) / 180
-			
-			// 计算弹窗显示位置（在扇形外侧）
-			const popupRadius = 120 // 弹窗距离中心的距离
-			const popupX = 50 + Math.cos(centerAngleRad) * (popupRadius / 100) * 50
-			const popupY = 50 + Math.sin(centerAngleRad) * (popupRadius / 100) * 50
-			
-			// 确保弹窗在容器范围内
-			const clampedX = Math.max(10, Math.min(90, popupX))
-			const clampedY = Math.max(10, Math.min(90, popupY))
-
+			// 以披萨容器的中心点为基准，向右偏移200px，向上偏移100px
 			return {
 				position: 'absolute',
-				top: `${clampedY}%`,
-				left: `${clampedX}%`,
-				transform: 'translate(-50%, -50%)',
-				zIndex: 1500,
-				pointerEvents: 'auto'
+				top: '50%',
+				left: '50%',
+				transform: 'translate(calc(-50% + 400px), calc(-50% - 150px))',
+				zIndex: 1600,
+			}
+		},
+		getLeftTextStyle() {
+			if (this.selectedSlice === null) return {}
+
+			// 以披萨容器的中心点为基准，向左偏移200px
+			return {
+				position: 'absolute',
+				top: '50%',
+				left: '50%',
+				transform: 'translate(calc(-50% - 400px), -50%)',
+				zIndex: 1600,
+				pointerEvents: 'none'
 			}
 		},
 		getSliceTitle(index) {
+			if (index <= 2){
+				return '#PublicHealth'
+			}else if (index <= 5){
+				return '#InclusiveReadinessPolicy'
+			}else if (index <= 7){
+				return '#Misinformation'
+			}else if (index <= 9){
+				return '#BritishCitizenship'
+			}
+			return '#NHSReform'
+		},
+		getSliceContent(index) {
+			if (index <= 2){
+				return 'A new report, Change the Prescription, reveals a stark reality: rising antidepressant use, soaring diagnoses in children, and a mental health system that\'s missing the root cause. Here\'s what needs to change.'
+			}else if (index <= 5){
+				return 'Publishing demographic recruitment and retention data, providing unconscious-bias training for leaders, and conducting regular “cohesion health checks” have proven effective in allied forces for balancing diversity with performance.'
+			}else if (index <= 7){
+				return 'After the tragic Southport murders, far-right voices spread false claims, riots broke out, and accusations of a government cover-up took hold. Now that the truth is public, what really happened — and what can we learn?'
+			}else if (index <= 9){
+				return 'From 22 July, Irish citizens living in the UK will be able to apply for British citizenship more easily and for less. No English test. No Life in the UK exam. Here\'s what the new route means, who qualifies, and why it matters'
+			}
+			return '#NHSReform'
+		},
+		getSliceLeftContent(index) {
+			if (index <= 2){
+				return '“It’s Time to Change the Prescription for Mental Health”'
+			}else if (index <= 5){
+				return '“Putting diagnostics in local hubs is smart—but will they have the staff?”'
+			}else if (index <= 7){
+				return '“Southport, Disinformation & the Myth of a Cover-up: What Really Happened”'
+			}else if (index <= 9){
+				return '”New British Citizenship Route for Irish Nationals: What You Need to Know”'
+			}
 			return '#NHSReform'
 		},
 		exploreSlice(index) {
 			console.log('Exploring slice:', index)
 			// 可以在这里添加导航到具体扇形页面的逻辑
+			if (index <= 2){
+				this.$router.push('/newsd')
+			}else if (index <= 5){
+				this.$router.push('/newsc')
+			}else if (index <= 7){
+				this.$router.push('/news')
+			}else if (index <= 9){
+				this.$router.push('/newsb')
+			}
 		},
 		closePopup() {
 			this.selectedSlice = null
+			this.popupExpanded = false
 			console.log('Popup closed')
+		},
+		togglePopupExpanded() {
+			console.log('togglePopupExpanded called, current state:', this.popupExpanded)
+			this.popupExpanded = !this.popupExpanded
+			console.log('togglePopupExpanded after toggle:', this.popupExpanded)
 		}
 	}
 }
@@ -639,7 +707,7 @@ export default {
 	z-index: 1000;
 	width: 40px;
 	height: 40px;
-	background: rgba(30, 30, 30, 0.8);
+	// background: rgba(30, 30, 30, 0.8);
 	border-radius: 50%;
 	display: flex;
 	align-items: center;
@@ -655,7 +723,7 @@ export default {
 	}
 	
 	&:hover {
-		background: rgba(30, 30, 30, 1);
+		// background: rgba(30, 30, 30, 1);
 		border-color: rgba(255, 255, 255, 0.4);
 		transform: scale(1.1);
 		
@@ -745,22 +813,58 @@ export default {
 	}
 }
 
+// .left-text-content {
+// 	position: fixed;
+// 	top: 50%
+// 	left: 50%;
+// 	width: 300px; /* 左侧文字区域宽度 */
+// 	height: auto;
+// 	display: flex;
+// 	align-items: center;
+// 	justify-content: center;
+// 	background: rgba(30, 30, 30, 0.95);
+// 	backdrop-filter: blur(30px);
+// 	-webkit-backdrop-filter: blur(30px);
+// 	border-radius: 16px;
+// 	box-shadow: 
+// 		0 8px 32px rgba(0, 0, 0, 0.6),
+// 		0 0 0 1px rgba(255, 255, 255, 0.1);
+// 	z-index: 1499;
+// 	pointer-events: none;
+// 	padding: 20px;
+// 	animation: leftTextEnter 0.3s ease-out;
+	
+// 	h2 {
+// 		margin: 0;
+// 		font-size: 24px;
+// 		font-weight: 600;
+// 		color: #FFFFFF;
+// 		font-family: 'BioRhyme', serif;
+// 		text-align: center;
+// 		line-height: 1.3;
+// 		letter-spacing: -0.5px;
+// 	}
+// }
+
 .selection-popup {
 	position: absolute;
 	z-index: 1500;
 	pointer-events: all;
 	
+	
+
 	.popup-content {
-		background: rgba(30, 30, 30, 0.95);
-		backdrop-filter: blur(30px);
-		-webkit-backdrop-filter: blur(30px);
+		position: relative;
+		// background: rgba(30, 30, 30, 0.95);
+		background-color: rgba(255, 255, 255, 0.5); /* 白色背景，半透明 */
+		// backdrop-filter: blur(30px);
+		// -webkit-backdrop-filter: blur(30px);
 		border-radius: 16px;
 		padding: 0;
 		box-shadow: 
 			0 8px 32px rgba(0, 0, 0, 0.6),
 			0 0 0 1px rgba(255, 255, 255, 0.1);
-		min-width: 280px;
-		max-width: 400px;
+		width: 400px;
 		overflow: hidden;
 		
 		.popup-header {
@@ -779,24 +883,76 @@ export default {
 				font-family: 'BioRhyme', serif;
 			}
 			
-			.popup-close {
-				width: 28px;
-				height: 28px;
-				border-radius: 50%;
-				background: rgba(255, 255, 255, 0.15);
-				color: #FFFFFF;
-				border: none;
-				cursor: pointer;
+			.popup-actions {
 				display: flex;
-				align-items: center;
-				justify-content: center;
-				font-size: 20px;
-				font-weight: bold;
-				transition: all 0.2s ease;
+				gap: 12px;
 				
-				&:hover {
-					background: rgba(255, 255, 255, 0.25);
-					transform: scale(1.1);
+				.popup-more-btn {
+					width: 30px;
+					height: 30px;
+					border-radius: 50%;
+					background: rgba(255, 255, 255, 0.15);
+					color: #FFFFFF;
+					border: none;
+					cursor: pointer;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					font-size: 20px;
+					font-weight: bold;
+					transition: all 0.2s ease;
+					position: relative;
+					padding: 0;
+					margin-right: 10px;
+					z-index: 1600; // 确保按钮在最上层
+					
+					.dot {
+						display: block;
+						width: 6px;
+						height: 6px;
+						background: #FFFFFF;
+						border-radius: 50%;
+						margin: 2px 0;
+					}
+					
+					&.expanded {
+						.dot:nth-child(1) {
+							transform: translateY(-2px);
+						}
+						.dot:nth-child(2) {
+							transform: translateY(2px);
+						}
+						.dot:nth-child(3) {
+							transform: translateY(-2px);
+						}
+					}
+					
+					&:hover {
+						background: rgba(255, 255, 255, 0.25);
+						transform: scale(1.1);
+					}
+				}
+				
+				.popup-close {
+					width: 28px;
+					height: 28px;
+					border-radius: 50%;
+					background: rgba(255, 255, 255, 0.15);
+					color: #FFFFFF;
+					border: none;
+					cursor: pointer;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					font-size: 20px;
+					font-weight: bold;
+					transition: all 0.2s ease;
+					z-index: 1600; // 确保按钮在最上层
+					
+					&:hover {
+						background: rgba(255, 255, 255, 0.25);
+						transform: scale(1.1);
+					}
 				}
 			}
 		}
@@ -847,45 +1003,52 @@ export default {
 	}
 }
 
-// 弹窗过渡动画
-.popup-enter-active {
-	animation: popupEnter 0.3s ease-out;
+// 弹窗展开动画
+.popup-expand-enter-active,
+.popup-expand-leave-active {
+	transition: all 0.3s ease;
+	transform-origin: top;
 }
 
-.popup-leave-active {
-	animation: popupLeave 0.2s ease-in;
+.popup-expand-enter-from {
+	opacity: 0;
+	transform: scaleY(0);
+	max-height: 0;
 }
 
-@keyframes popupEnter {
-	from {
-		opacity: 0;
-		transform: translate(-50%, -50%) scale(0.8) translateY(-20px);
-	}
-	to {
-		opacity: 1;
-		transform: translate(-50%, -50%) scale(1) translateY(0);
-	}
+.popup-expand-leave-to {
+	opacity: 0;
+	transform: scaleY(0);
+	max-height: 0;
 }
 
-@keyframes popupLeave {
-	from {
-		opacity: 1;
-		transform: translate(-50%, -50%) scale(1) translateY(0);
-	}
-	to {
-		opacity: 0;
-		transform: translate(-50%, -50%) scale(0.9) translateY(-10px);
-	}
-}
-
-@keyframes popupFadeIn {
-	from {
-		opacity: 0;
-		transform: scale(0.9) translateY(-10px);
-	}
-	to {
-		opacity: 1;
-		transform: scale(1) translateY(0);
+.left-text-content {
+	position: absolute;
+	width: 400px;
+	height: auto;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: transparent;
+	// backdrop-filter: blur(30px);
+	// -webkit-backdrop-filter: blur(30px);
+	border-radius: 16px;
+	// box-shadow: 
+	// 	0 8px 32px rgba(0, 0, 0, 0.6),
+	// 	0 0 0 1px rgba(255, 255, 255, 0.1);
+	z-index: 1499;
+	pointer-events: none;
+	padding: 20px;
+	
+	h2 {
+		margin: 0;
+		font-size: 24px;
+		font-weight: 600;
+		color: #FFFFFF;
+		font-family: 'BioRhyme', serif;
+		text-align: center;
+		line-height: 1.3;
+		letter-spacing: -0.5px;
 	}
 }
 

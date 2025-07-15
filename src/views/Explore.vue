@@ -48,7 +48,7 @@
 			</div>
 
 			<!-- 主要新闻内容 -->
-			<div class="main-news">
+			<div class="main-news" id="forYou">
 				<!-- 视频区域 -->
 				<div class="video-container">
 					<div class="news-image">
@@ -72,12 +72,12 @@
 							:style="{ display: imageLoaded ? 'block' : 'none' }" />
 
 						<!-- 播放按钮 -->
-						<div class="play-button" v-if="imageLoaded" @click="handlePlayButtonClick">
+						<!-- <div class="play-button" v-if="imageLoaded" @click="handlePlayButtonClick">
 							<svg width="80" height="80" viewBox="0 0 80 80" fill="none">
 								<circle cx="40" cy="40" r="40" fill="rgba(255, 255, 255, 0.9)" />
 								<path d="M32 25L55 40L32 55V25Z" fill="#000" />
 							</svg>
-						</div>
+						</div> -->
 					</div>
 				</div>
 
@@ -86,7 +86,7 @@
 					<div class="news-header">
 						<h2>Today's News</h2>
 					</div>
-					<div class="news-items">
+					<div class="news-items" id="news">
 						<div class="news-item"
 							@click="handleNewsClick({ title: 'SCOTUS Upholds Trump\'s Federal Layoff Plans', meta: '2 hours ago · News · 41K posts' })">
 							<div class="news-title">SCOTUS Upholds Trump's Federal Layoff Plans</div>
@@ -132,7 +132,7 @@
 			</div>
 
 			<!-- 趋势标签 -->
-			<div class="trending-tags">
+			<div class="trending-tags" id="trending">
 				<div class="trending-location">
 					<div class="location-text">Trending in United Kingdom</div>
 				</div>
@@ -483,6 +483,7 @@
 				switch (tabId) {
 					case 'forYou':
 						console.log('Loading For You content');
+						
 						break;
 					case 'trending':
 						console.log('Loading Trending Topics content');
@@ -491,6 +492,13 @@
 						console.log('Loading News content');
 						break;
 				}
+				this.scrollToSection(tabId)
+			},
+			scrollToSection(id) {
+			    const element = document.getElementById(id);
+			    if (element) {
+			      element.scrollIntoView({ behavior: 'smooth' });
+			    }
 			},
 
 			handleNewsClick(newsItem) {

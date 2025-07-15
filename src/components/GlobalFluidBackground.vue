@@ -1,14 +1,13 @@
 <template>
-  <div class="global-fluid-background">
-    <!-- 纯黑底色 -->
+  <!-- <div class="global-fluid-background">
     <div class="black-background"></div>
     
-    <!-- 大片流体层 -->
     <canvas 
       ref="fluidCanvas"
       class="fluid-canvas"
     ></canvas>
-  </div>
+  </div> -->
+  <div id="box" class="global-fluid-background"></div>
 </template>
 
 <script>
@@ -59,14 +58,31 @@ export default {
   },
   
   mounted() {
-    this.$nextTick(() => {
-      this.initMathCache()
-      this.initCanvas()
-      this.handleResize()
-      this.initFluidBlobs()
-      this.startAnimation()
-      window.addEventListener('resize', this.throttledResize)
-    })
+    // this.$nextTick(() => {
+    //   this.initMathCache()
+    //   this.initCanvas()
+    //   this.handleResize()
+    //   this.initFluidBlobs()
+    //   this.startAnimation()
+    //   window.addEventListener('resize', this.throttledResize)
+    // })
+	// let colorbg = new Color4Bg.AestheticFluidBg({
+	// 				dom: "box",
+	// 				colors: ["#352F30","#87507D","#489B92","#87507D","#87507D","#7F4B76"],
+	// 				seed: 52924,
+	// 				loop: true
+	// 			})
+	// 			colorbg.update('scale', 0.05)
+	// 			console.log('colorbg: ',colorbg);
+				
+	let colorbg = new Color4Bg.AestheticFluidBg({
+					dom: "box",
+					colors: ["#684B46","#7F4B76","#489B92","#017B82","#352F30","#352F30"],
+					seed: 71502,
+					loop: true
+				})
+				colorbg.update('scale', 0.07)
+				console.log('colorbg: ',colorbg);
   },
   
   beforeUnmount() {

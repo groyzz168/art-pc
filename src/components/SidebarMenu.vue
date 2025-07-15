@@ -2,7 +2,8 @@
 	<div class="sidebar" :class="{ 'white-theme': theme === 'white' }">
 		<!-- Logo -->
 		<div class="logo-section">
-			<img src="@/assets/figma/logo.png" alt="Logo" class="logo-image" />
+			<img v-if="theme === 'white'" src="@/assets/figma/logo-light.png" alt="Logo" class="logo-image" />
+			<img v-else src="@/assets/figma/logo.png" alt="Logo" class="logo-image" />
 		</div>
 
 		<!-- 导航菜单 -->
@@ -81,6 +82,8 @@
 </template>
 
 <script>
+import logo from '@/assets/figma/logo.png'
+import logoLight from '@/assets/figma/logo-light.png'
 import avatar1 from '@/assets/figma/avatar/avatar1.jpg'
 
 export default {
@@ -230,7 +233,7 @@ export default {
 			
 			.logo-section {
 				.logo-image {
-					filter: brightness(0) invert(1);
+					// filter: brightness(0) invert(1);
 				}
 			}
 			
