@@ -1,14 +1,34 @@
 <template>
 	<div class="trending-page">
-		
+		<!-- 隐藏/显示按钮 -->
+		<div class="sidebar-toggle" @click="toggleSidebar" :class="{ 'sidebar-hidden': !sidebarVisible }">
+			<svg v-if="sidebarVisible" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+			</svg>
+			<!-- <svg v-else width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+			</svg> -->
+			<svg v-else stroke="currentColor" width="36" height="32" viewBox="0 0 36 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path d="M25.657 0.00480875C25.8047 -0.0147081 25.9537 0.0257193 26.0718 0.116333L35.7806 7.57185V7.57046L35.8144 7.60392C35.827 7.61646 35.8383 7.62761 35.8495 7.64016C35.8945 7.68617 35.9311 7.74053 35.9578 7.79908V7.80048C35.9817 7.86181 35.9944 7.92733 35.9958 7.99285C35.9972 7.99982 35.9986 8.00819 36 8.01516C35.9986 8.02213 35.9972 8.0291 35.9958 8.03607C35.9944 8.10159 35.9803 8.16572 35.9578 8.22566C35.9564 8.22705 35.9564 8.22705 35.9564 8.22845L35.955 8.22984C35.9283 8.28839 35.8931 8.34137 35.8481 8.38737C35.8369 8.39992 35.8256 8.41107 35.813 8.42222C35.8031 8.43338 35.7919 8.44453 35.7806 8.45568L26.0718 15.9098C25.8271 16.098 25.4742 16.0548 25.2829 15.8108C25.0931 15.5682 25.1381 15.2183 25.3828 15.0287L33.792 8.56997L12.3566 8.57137C6.12429 8.57137 1.12643 13.5384 1.12643 19.7295C1.12643 25.9206 6.12573 30.8833 12.3566 30.8833L27.388 30.8847C27.5384 30.8833 27.6819 30.9419 27.7873 31.0478C27.8942 31.1524 27.9533 31.2946 27.9533 31.4437C27.9519 31.5915 27.8928 31.7337 27.7873 31.8383C27.6805 31.9428 27.537 32.0014 27.388 32H12.3566C5.5195 32 0 26.5187 0 19.7295C0 12.9406 5.5195 7.45468 12.3566 7.45468H33.7891L25.3824 0.995921C25.1377 0.807726 25.0927 0.457822 25.2826 0.213861C25.374 0.0981539 25.509 0.0228743 25.6566 0.00475208L25.657 0.00480875Z" fill="white"/>
+			</svg>
+		</div>
 
 		<!-- 左侧导航栏 -->
-		<SidebarMenu :active-nav-item="activeNavItem" :user-name="userName" :user-email="userEmail"
-			:user-avatar="userAvatar" @nav-click="handleNavClick" @post-click="handlePostClick"
-			@user-profile-click="handleUserProfileClick" />
+		<transition name="sidebar-slide">
+			<SidebarMenu 
+				v-if="sidebarVisible"
+				:active-nav-item="activeNavItem" 
+				:user-name="userName" 
+				:user-email="userEmail"
+				:user-avatar="userAvatar" 
+				@nav-click="handleNavClick" 
+				@post-click="handlePostClick"
+				@user-profile-click="handleUserProfileClick" 
+			/>
+		</transition>
 
 		<!-- 右侧披萨区域 -->
-		<div class="pizza-section">
+		<div class="pizza-section" :class="{ 'sidebar-hidden': !sidebarVisible }">
 			<div class="pizza-container" @click="handleContainerClick">
 				<!-- SVG 圆形扇形 -->
 				<svg class="pizza-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
@@ -106,7 +126,8 @@ export default {
 			imageCloud: [],
 			showPizzaSlices: true, // 控制扇形显示隐藏的属性
 			hoveredSlice: null, // 追踪当前hover的扇形区域
-			selectedSlice: null // 追踪当前选中的扇形区域
+			selectedSlice: null, // 追踪当前选中的扇形区域
+			sidebarVisible: true // 控制左侧栏显示隐藏
 		}
 	},
 	computed: {
@@ -127,6 +148,12 @@ export default {
 		this.generateImageCloud()
 	},
 	methods: {
+		// 新增：切换侧边栏显示/隐藏
+		toggleSidebar() {
+			this.sidebarVisible = !this.sidebarVisible
+			console.log('Sidebar visibility:', this.sidebarVisible)
+		},
+		
 		handleNavClick(navName) {
 			this.activeNavItem = navName
 			console.log('Navigation clicked:', navName)
@@ -605,6 +632,71 @@ export default {
 	z-index: -1;
 }
 
+.sidebar-toggle {
+	position: fixed;
+	bottom: 20px;
+	left: 20px;
+	z-index: 1000;
+	width: 40px;
+	height: 40px;
+	background: rgba(30, 30, 30, 0.8);
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	backdrop-filter: blur(10px);
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	
+	svg {
+		color: #FFFFFF;
+		transition: color 0.3s ease;
+	}
+	
+	&:hover {
+		background: rgba(30, 30, 30, 1);
+		border-color: rgba(255, 255, 255, 0.4);
+		transform: scale(1.1);
+		
+		svg {
+			color: #2FB9C5;
+		}
+	}
+
+	&.sidebar-hidden {
+		left: 20px; // 修正：隐藏时仍显示按钮
+		border: none;
+		// background: rgba(47, 185, 197, 0.8);
+		// border-color: rgba(47, 185, 197, 0.4);
+		
+		&:hover {
+			svg {
+				color: #2FB9C5;
+			}
+			// background: rgba(47, 185, 197, 1);
+			// border-color: rgba(47, 185, 197, 0.6);
+		}
+	}
+}
+
+/* 侧边栏滑动动画 */
+.sidebar-slide-enter-active,
+.sidebar-slide-leave-active {
+	transition: all 0.3s ease;
+}
+
+.sidebar-slide-enter-from {
+	transform: translateX(-100%);
+	opacity: 0;
+}
+
+.sidebar-slide-leave-to {
+	transform: translateX(-100%);
+	opacity: 0;
+}
+
+/* 当侧边栏隐藏时，调整披萨区域的位置 */
 .pizza-section {
 	flex: 1;
 	margin-left: 27%;
@@ -613,6 +705,11 @@ export default {
 	justify-content: center;
 	min-height: 100vh;
 	padding: 40px;
+	transition: margin-left 0.3s ease;
+
+	&.sidebar-hidden {
+		margin-left: 0;
+	}
 }
 
 .pizza-container {
