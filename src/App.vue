@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <GlobalVideoBackground />
+    <GlobalFluidBackground />
     <div class="page-container">
       <router-view />
     </div>
@@ -8,12 +8,12 @@
 </template>
 
 <script>
-import GlobalVideoBackground from '@/components/GlobalVideoBackground.vue'
+import GlobalFluidBackground from '@/components/GlobalFluidBackground.vue'
 
 export default {
   name: 'App',
   components: {
-    GlobalVideoBackground
+    GlobalFluidBackground
   }
 }
 </script>
@@ -24,7 +24,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: $color-white;
-  background: $color-black;
+  background: transparent;
   margin: 0;
   padding: 0;
   min-height: 100vh;
@@ -41,7 +41,7 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  background: $color-black;
+  background: transparent;
 }
 
 .page-container {

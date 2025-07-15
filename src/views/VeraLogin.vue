@@ -6,13 +6,13 @@
     </div>
 
     <!-- 背景装饰 SVG -->
-    <div class="background-decorations">
+    <!-- <div class="background-decorations">
       <img src="@/assets/figma/login-vector3.svg" class="vector-3" alt="装饰" />
       <img src="@/assets/figma/login-vector5.svg" class="vector-5" alt="装饰" />
       <img src="@/assets/figma/login-vector6.svg" class="vector-6" alt="装饰" />
       <img src="@/assets/figma/login-vector7.svg" class="vector-7" alt="装饰" />
       <div class="ellipse-2"></div>
-    </div>
+    </div> -->
 
     <!-- 背景 VERA 图片 -->
     <div class="background-logo">
@@ -143,7 +143,7 @@ export default {
   position: relative;
   width: 100vw;
   height: 100vh;
-  background: #000000;
+  // background: #000000;
   overflow: visible;
   display: flex;
   align-items: center;

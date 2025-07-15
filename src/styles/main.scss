@@ -15,8 +15,12 @@ html, body {
   height: 100%;
   font-family: $font-primary;
   color: $color-white;
-  background: $color-black;
+  background: transparent;
   overflow-x: hidden;
+}
+
+html {
+  background: $color-black;
 }
 
 #app {
@@ -32,7 +36,7 @@ body {
   font-size: $font-size-lg;
   line-height: 1.549;
   color: $color-white;
-  background: $color-black;
+  background: transparent;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

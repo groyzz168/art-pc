@@ -78,7 +78,7 @@
 					<div v-for="trend in trendingTopics" :key="trend.id" class="trending-item"
 						@click="selectTrend(trend)">
 						<div class="trending-image" v-if="trend.image">
-							<img :src="trend.image" :alt="trend.title" />
+							<img src="@/assets/right/d1facbaa8de0c18a05f824787ba3598d93fc0067.png" :alt="trend.title" />
 						</div>
 						<div class="trending-content">
 							<div class="trending-category" v-if="trend.category">{{ trend.category }}</div>
@@ -142,6 +142,9 @@
 <script>
 import avatar1 from '@/assets/figma/avatar/avatar1.jpg'
 import avatar2 from '@/assets/figma/avatar/avatar2.png'
+import userAvatar1 from '@/assets/right/ff5df8a387941532dfba1a476259cb1f58b083c6.jpg'
+import userAvatar2 from '@/assets/right/e11d8650ead4662434056954faae2c4bbddba503.jpg'
+import userAvatar3 from '@/assets/right/1ce0ca3e3b6eb048fe749c4d1b8594eac7ba5b7b.jpg'
 import SidebarMenu from '@/components/SidebarMenu.vue'
 import MasaigonBackground from '@/components/MasaigonBackground.vue'
 
@@ -236,21 +239,21 @@ export default {
 					id: 1,
 					name: 'Angela Rayner',
 					handle: '@AngelaRayner',
-					avatar: avatar1,
+					avatar: userAvatar1,
 					isFollowing: false
 				},
 				{
 					id: 2,
 					name: 'Big Hims',
 					handle: '@BigHims',
-					avatar: avatar1,
+					avatar: userAvatar2,
 					isFollowing: false
 				},
 				{
 					id: 3,
 					name: 'Franz von Holzhausen',
 					handle: '@FranzVH',
-					avatar: avatar1,
+					avatar: userAvatar3,
 					isFollowing: false
 				}
 			]
@@ -304,21 +307,20 @@ export default {
 
 <style scoped lang="scss">
 	/* 全局样式重置 */
-	:global(body) {
-		background: #000 !important;
-		margin: 0;
-		padding: 0;
-		overflow-x: hidden;
-	}
+	// :global(body) {
+	// 	background: #000 !important;
+	// 	margin: 0;
+	// 	padding: 0;
+	// 	overflow-x: hidden;
+	// }
 
-	:global(html) {
-		background: #000 !important;
-	}
+	// :global(html) {
+	// 	background: #000 !important;
+	// }
 
 	.social-feed {
 		display: flex;
 		min-height: 100vh;
-		background: #000;
 		color: #FFFFFF;
 		font-family: 'BioRhyme', serif;
 		position: relative;

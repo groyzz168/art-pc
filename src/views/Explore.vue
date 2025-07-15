@@ -157,7 +157,7 @@
 				<div class="trending-items">
 					<div class="trending-item">
 						<div class="trending-image">
-							<img src="@/assets/figma/avatar/avatar1.jpg" alt="Flamengo vs Bayern Munich" />
+							<img src="@/assets/right/d1facbaa8de0c18a05f824787ba3598d93fc0067.png" alt="Flamengo vs Bayern Munich" />
 						</div>
 						<div class="trending-content">
 							<div class="trending-title">Flamengo vs Bayern Munich</div>
@@ -243,37 +243,18 @@
 			<div class="follow-section">
 				<h3>Who to follow</h3>
 				<div class="follow-suggestions">
-					<div class="follow-item">
+					<div v-for="user in suggestedUsers" :key="user.id" class="follow-item">
 						<div class="follow-avatar">
-							<img src="@/assets/figma/avatar/avatar1.jpg" alt="头像" />
+							<img :src="user.avatar" :alt="user.name" />
 						</div>
 						<div class="follow-info">
-							<div class="follow-name">Angela Rayner</div>
-							<div class="follow-handle">@AngelaRayner</div>
+							<div class="follow-name">{{ user.name }}</div>
+							<div class="follow-handle">{{ user.handle }}</div>
 						</div>
-						<button class="follow-button">Follow</button>
-					</div>
-
-					<div class="follow-item">
-						<div class="follow-avatar">
-							<img src="@/assets/figma/avatar/avatar2.png" alt="头像" />
-						</div>
-						<div class="follow-info">
-							<div class="follow-name">Franz von Holzhausen</div>
-							<div class="follow-handle">@woodhaus2</div>
-						</div>
-						<button class="follow-button">Follow</button>
-					</div>
-
-					<div class="follow-item">
-						<div class="follow-avatar">
-							<img src="@/assets/figma/avatar/avatar1.jpg" alt="头像" />
-						</div>
-						<div class="follow-info">
-							<div class="follow-name">Big Hims</div>
-							<div class="follow-handle">@hiking skiing</div>
-						</div>
-						<button class="follow-button">Follow</button>
+						<button class="follow-button" @click="toggleFollow(user)"
+							:class="{ following: user.isFollowing }">
+							{{ user.isFollowing ? 'Following' : 'Follow' }}
+						</button>
 					</div>
 				</div>
 			</div>
@@ -284,6 +265,9 @@
 <script>
 	import SidebarMenu from '@/components/SidebarMenu.vue'
 	import avatar1 from '@/assets/figma/avatar/avatar1.jpg'
+	import userAvatar1 from '@/assets/right/ff5df8a387941532dfba1a476259cb1f58b083c6.jpg'
+	import userAvatar2 from '@/assets/right/e11d8650ead4662434056954faae2c4bbddba503.jpg'
+	import userAvatar3 from '@/assets/right/1ce0ca3e3b6eb048fe749c4d1b8594eac7ba5b7b.jpg'
 	import MasaigonBackground from '@/components/MasaigonBackground.vue'
 
 	export default {
@@ -308,7 +292,29 @@
 					{ id: 'news', name: 'News' }
 				],
 				hoverTimeout: null,
-				isTabTransitioning: false
+				isTabTransitioning: false,
+				suggestedUsers: [{
+						id: 1,
+						name: 'Angela Rayner',
+						handle: '@AngelaRayner',
+						avatar: userAvatar1,
+						isFollowing: false
+					},
+					{
+						id: 2,
+						name: 'Big Hims',
+						handle: '@BigHims',
+						avatar: userAvatar2,
+						isFollowing: false
+					},
+					{
+						id: 3,
+						name: 'Franz von Holzhausen',
+						handle: '@FranzVH',
+						avatar: userAvatar3,
+						isFollowing: false
+					}
+				]
 			}
 		},
 		methods: {
@@ -536,7 +542,10 @@
 			handleResize() {
 				// 窗口大小变化时的处理（移除指示器相关逻辑）
 				console.log('Window resized');
-			}
+			},
+			toggleFollow(user) {
+				user.isFollowing = !user.isFollowing
+			},
 		},
 
 		mounted() {
@@ -558,22 +567,22 @@
 </script>
 
 <style scoped lang="scss">
-	/* 全局样式重置 */
-	:global(body) {
-		background: #000 !important;
-		margin: 0;
-		padding: 0;
-		overflow-x: hidden;
-	}
+	// /* 全局样式重置 */
+	// :global(body) {
+	// 	background: #000 !important;
+	// 	margin: 0;
+	// 	padding: 0;
+	// 	overflow-x: hidden;
+	// }
 
-	:global(html) {
-		background: #000 !important;
-	}
+	// :global(html) {
+	// 	background: #000 !important;
+	// }
 
 	.explore-page {
 		display: flex;
 		min-height: 100vh;
-		background: #000;
+		// background: #000;
 		color: #FFFFFF;
 		font-family: 'BioRhyme', serif;
 		position: relative;
@@ -1039,7 +1048,7 @@
 
 		.news-list-section {
 			padding: 30px;
-			background: rgba(0, 0, 0, 0.8);
+			// background: rgba(0, 0, 0, 0.8);
 			color: #FFFFFF;
 
 			.news-header {
@@ -1289,7 +1298,7 @@
 
 	.trending-tags {
 		padding: 30px;
-		background: rgba(0, 0, 0, 0.6);
+		// background: rgba(0, 0, 0, 0.6);
 		border-top: 1px solid rgba(255, 255, 255, 0.1);
 
 		.trending-location {
@@ -1562,6 +1571,17 @@
 				&:hover {
 					background: rgba(255, 255, 255, 0.1);
 					transform: translateY(-2px);
+				}
+				
+				&.following {
+					background: rgba(255, 255, 255, 0.1);
+					border-color: rgba(255, 255, 255, 0.3);
+				
+					&:hover {
+						background: rgba(244, 33, 46, 0.2);
+						border-color: #f4212e;
+						color: #f4212e;
+					}
 				}
 			}
 		}

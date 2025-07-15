@@ -1,7 +1,7 @@
 <template>
 	<div class="profile-page">
 		<!-- 背景渐变 -->
-		<div class="background-gradient"></div>
+		<!-- <div class="background-gradient"></div> -->
 
 		<!-- 左侧导航栏 -->
 		<SidebarMenu 
@@ -161,7 +161,7 @@
 					<div v-for="trend in trendingTopics" :key="trend.id" class="trending-item"
 						@click="selectTrend(trend)">
 						<div class="trending-image" v-if="trend.image">
-							<img :src="trend.image" :alt="trend.title" />
+							<img src="@/assets/right/d1facbaa8de0c18a05f824787ba3598d93fc0067.png" :alt="trend.title" />
 						</div>
 						<div class="trending-content">
 							<div class="trending-category" v-if="trend.category">{{ trend.category }}</div>
@@ -340,21 +340,21 @@ export default {
 
 <style scoped lang="scss">
 	/* 全局样式重置 */
-	:global(body) {
-		background: #000 !important;
-		margin: 0;
-		padding: 0;
-		overflow-x: hidden;
-	}
+	// :global(body) {
+	// 	background: #000 !important;
+	// 	margin: 0;
+	// 	padding: 0;
+	// 	overflow-x: hidden;
+	// }
 
-	:global(html) {
-		background: #000 !important;
-	}
+	// :global(html) {
+	// 	background: #000 !important;
+	// }
 
 	.profile-page {
 		display: flex;
 		min-height: 100vh;
-		background: #000;
+		// background: #000;
 		color: #FFFFFF;
 		font-family: 'BioRhyme', serif;
 		position: relative;
@@ -377,7 +377,7 @@ export default {
 		margin-left: 27%;
 		margin-right: 27%;
 		width: 48%;
-		background: rgba(0, 0, 0, 0.8);
+		// background: rgba(0, 0, 0, 0.8);
 		backdrop-filter: blur(15.7px);
 		border-radius: 15px;
 		min-height: 100vh;

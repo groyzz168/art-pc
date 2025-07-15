@@ -1,224 +1,324 @@
 <template>
-  <div class="masaigon-wave-container">
-    <!-- 基础背景层 -->
-    <div class="base-background"></div>
-    
-    <!-- 动态波浪层 -->
-    <div class="wave-canvas" :style="waveStyle">
-      <div class="wave-layer"></div>
-    </div>
-    
-    <!-- 调试信息 -->
-    <div class="debug-info">
-      <p>Point1: {{ Math.round(point1X) }}%, {{ Math.round(point1Y) }}%</p>
-      <p>Point2: {{ Math.round(point2X) }}%, {{ Math.round(point2Y) }}%</p>
-      <p>Point3: {{ Math.round(point3X) }}%, {{ Math.round(point3Y) }}%</p>
-      <p>Point4: {{ Math.round(point4X) }}%, {{ Math.round(point4Y) }}%</p>
-      <p>动画时间: {{ Math.floor(time) }}s</p>
-      <p>波浪速度: {{ waveSpeed.toFixed(2) }}</p>
+  <div class="fluid-background">
+    <div class="fluid-container">
+      <!-- 流体形状层 -->
+      <div class="fluid-shape shape-1"></div>
+      <div class="fluid-shape shape-2"></div>
+      <div class="fluid-shape shape-3"></div>
+      <div class="fluid-shape shape-4"></div>
+      <div class="fluid-shape shape-5"></div>
+      
+      <!-- 渐变覆盖层 -->
+      <div class="gradient-overlay"></div>
+      
+      <!-- 内容区域 -->
+      <div class="content">
+        <h1>流体背景动画</h1>
+        <p>基于您提供的图片创建的动态背景效果</p>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'MasaigonWaveTest',
-  data() {
-    return {
-      time: 0,
-      animationId: null,
-      
-      // clip-path 控制点 (完全复刻masaigon.space)
-      point1X: 50,
-      point1Y: 50,
-      point2X: 50,
-      point2Y: 50,
-      point3X: 50,
-      point3Y: 50,
-      point4X: 50,
-      point4Y: 50,
-      
-      // 波浪动画参数
-      waveSpeed: 0.8,      // 波浪速度
-      waveAmplitude: 25,   // 波浪幅度
-      waveFrequency: 0.6,  // 波浪频率
-      
-      // 从右往左的波浪参数
-      rightToLeftOffset: 0,
-      waveDirection: -1,   // -1 表示从右往左
-    }
-  },
-  
-  computed: {
-    waveStyle() {
-      return {
-        '--point1X': `${this.point1X}%`,
-        '--point1Y': `${this.point1Y}%`,
-        '--point2X': `${this.point2X}%`,
-        '--point2Y': `${this.point2Y}%`,
-        '--point3X': `${this.point3X}%`,
-        '--point3Y': `${this.point3Y}%`,
-        '--point4X': `${this.point4X}%`,
-        '--point4Y': `${this.point4Y}%`
-      }
-    }
-  },
-  
+  name: 'Test',
   mounted() {
-    console.log("Masaigon波浪动画初始化开始");
-    this.startWaveAnimation();
-    console.log("Masaigon波浪动画初始化完成");
+    this.initAnimation();
   },
-  
-  beforeUnmount() {
-    this.stopWaveAnimation();
-  },
-  
   methods: {
-    startWaveAnimation() {
-      const animate = () => {
-        this.time += 0.016; // 60fps
-        this.updateWavePoints();
-        this.animationId = requestAnimationFrame(animate);
-      };
+    initAnimation() {
+      // 鼠标移动交互
+      const container = document.querySelector('.fluid-container');
+      const shapes = document.querySelectorAll('.fluid-shape');
       
-      animate();
-    },
-    
-    stopWaveAnimation() {
-      if (this.animationId) {
-        cancelAnimationFrame(this.animationId);
-        this.animationId = null;
-      }
-    },
-    
-    updateWavePoints() {
-      const timeOffset = this.time * this.waveSpeed;
-      const amplitude = this.waveAmplitude;
-      const frequency = this.waveFrequency;
+      container.addEventListener('mousemove', (e) => {
+        const rect = container.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width;
+        const y = (e.clientY - rect.top) / rect.height;
+        
+        shapes.forEach((shape, index) => {
+          const intensity = (index + 1) * 0.1;
+          const translateX = (x - 0.5) * 50 * intensity;
+          const translateY = (y - 0.5) * 50 * intensity;
+          
+          shape.style.transform = `translate(${translateX}px, ${translateY}px) scale(${1 + intensity * 0.1})`;
+        });
+      });
       
-      // 从右往左的波浪效果 (完全复刻masaigon.space的算法)
-      
-      // Point 1 (右上角开始)
-      this.point1X = 100 + Math.sin(timeOffset * frequency) * amplitude * 0.3;
-      this.point1Y = 20 + Math.cos(timeOffset * frequency * 0.8) * amplitude * 0.4;
-      
-      // Point 2 (右下角)
-      this.point2X = 100 + Math.sin(timeOffset * frequency + Math.PI * 0.3) * amplitude * 0.5;
-      this.point2Y = 80 + Math.cos(timeOffset * frequency * 0.9 + Math.PI * 0.3) * amplitude * 0.3;
-      
-      // Point 3 (左下角)
-      this.point3X = -20 + Math.sin(timeOffset * frequency + Math.PI * 0.8) * amplitude * 0.6;
-      this.point3Y = 85 + Math.cos(timeOffset * frequency * 0.7 + Math.PI * 0.8) * amplitude * 0.4;
-      
-      // Point 4 (左上角)
-      this.point4X = -15 + Math.sin(timeOffset * frequency + Math.PI * 1.2) * amplitude * 0.4;
-      this.point4Y = 15 + Math.cos(timeOffset * frequency * 0.85 + Math.PI * 1.2) * amplitude * 0.5;
-      
-      // 添加从右往左的流动效果
-      const flowOffset = (this.time * this.waveSpeed * 2) % 200;
-      
-      this.point1X += Math.sin(timeOffset * 0.5) * 15 - flowOffset * 0.1;
-      this.point2X += Math.sin(timeOffset * 0.5 + Math.PI * 0.5) * 15 - flowOffset * 0.1;
-      this.point3X += Math.sin(timeOffset * 0.5 + Math.PI) * 15 - flowOffset * 0.1;
-      this.point4X += Math.sin(timeOffset * 0.5 + Math.PI * 1.5) * 15 - flowOffset * 0.1;
-      
-      // 添加垂直波动让效果更自然
-      const verticalWave = Math.sin(timeOffset * 0.3) * 8;
-      this.point1Y += verticalWave;
-      this.point2Y += verticalWave * 0.8;
-      this.point3Y += verticalWave * 0.6;
-      this.point4Y += verticalWave * 0.9;
+      // 重置动画
+      container.addEventListener('mouseleave', () => {
+        shapes.forEach(shape => {
+          shape.style.transform = 'translate(0, 0) scale(1)';
+        });
+      });
     }
   }
 }
 </script>
 
-<style scoped lang="scss">
-.masaigon-wave-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+<style scoped>
+.fluid-background {
+  width: 100vw;
+  height: 100vh;
   overflow: hidden;
-  z-index: 1;
+  position: relative;
+  background: #000;
 }
 
-.base-background {
+.fluid-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  cursor: pointer;
+}
+
+.fluid-shape {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.8;
+  animation: float 20s infinite ease-in-out;
+  transition: transform 0.3s ease-out;
+}
+
+.shape-1 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, #ff6b9d, #c44569);
+  top: 20%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.shape-2 {
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, #4834d4, #686de0);
+  top: 60%;
+  left: 70%;
+  animation-delay: -5s;
+}
+
+.shape-3 {
+  width: 500px;
+  height: 350px;
+  background: radial-gradient(ellipse, #00d2d3, #54a0ff);
+  top: 10%;
+  right: 20%;
+  animation-delay: -10s;
+  border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+}
+
+.shape-4 {
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle, #ff9ff3, #f368e0);
+  bottom: 30%;
+  left: 30%;
+  animation-delay: -15s;
+}
+
+.shape-5 {
+  width: 600px;
+  height: 400px;
+  background: radial-gradient(ellipse, #ff6348, #ff4757);
+  bottom: 10%;
+  right: 10%;
+  animation-delay: -7s;
+  border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+}
+
+.gradient-overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #2d1b69 100%);
+  background: linear-gradient(
+    45deg,
+    rgba(255, 107, 157, 0.1) 0%,
+    rgba(72, 52, 212, 0.1) 25%,
+    rgba(0, 210, 211, 0.1) 50%,
+    rgba(255, 99, 72, 0.1) 75%,
+    rgba(255, 159, 243, 0.1) 100%
+  );
+  animation: gradientShift 15s infinite linear;
 }
 
-.wave-canvas {
+.content {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  
-  .wave-layer {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    
-    // 关键：使用clip-path polygon创建波浪形状
-    clip-path: polygon(
-      var(--point1X) var(--point1Y),
-      var(--point2X) var(--point2Y),
-      var(--point3X) var(--point3Y),
-      var(--point4X) var(--point4Y)
-    );
-    
-    // 波浪层的渐变背景
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white;
+  z-index: 10;
+}
+
+.content h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  animation: textGlow 3s infinite alternate;
+}
+
+.content p {
+  font-size: 1.2rem;
+  opacity: 0.8;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+  }
+  25% {
+    transform: translate(-30px, -50px) rotate(5deg) scale(1.1);
+  }
+  50% {
+    transform: translate(20px, -30px) rotate(-3deg) scale(0.9);
+  }
+  75% {
+    transform: translate(-10px, 20px) rotate(2deg) scale(1.05);
+  }
+}
+
+@keyframes gradientShift {
+  0% {
     background: linear-gradient(
       45deg,
-      #ff6b6b 0%,
-      #4ecdc4 25%,
-      #45b7d1 50%,
-      #96ceb4 75%,
-      #ffeaa7 100%
+      rgba(255, 107, 157, 0.1) 0%,
+      rgba(72, 52, 212, 0.1) 25%,
+      rgba(0, 210, 211, 0.1) 50%,
+      rgba(255, 99, 72, 0.1) 75%,
+      rgba(255, 159, 243, 0.1) 100%
     );
-    
-    // 添加混合模式增强效果
-    mix-blend-mode: screen;
-    
-    // 平滑过渡
-    transition: all 0.1s ease-out;
+  }
+  25% {
+    background: linear-gradient(
+      45deg,
+      rgba(72, 52, 212, 0.1) 0%,
+      rgba(0, 210, 211, 0.1) 25%,
+      rgba(255, 99, 72, 0.1) 50%,
+      rgba(255, 159, 243, 0.1) 75%,
+      rgba(255, 107, 157, 0.1) 100%
+    );
+  }
+  50% {
+    background: linear-gradient(
+      45deg,
+      rgba(0, 210, 211, 0.1) 0%,
+      rgba(255, 99, 72, 0.1) 25%,
+      rgba(255, 159, 243, 0.1) 50%,
+      rgba(255, 107, 157, 0.1) 75%,
+      rgba(72, 52, 212, 0.1) 100%
+    );
+  }
+  75% {
+    background: linear-gradient(
+      45deg,
+      rgba(255, 99, 72, 0.1) 0%,
+      rgba(255, 159, 243, 0.1) 25%,
+      rgba(255, 107, 157, 0.1) 50%,
+      rgba(72, 52, 212, 0.1) 75%,
+      rgba(0, 210, 211, 0.1) 100%
+    );
+  }
+  100% {
+    background: linear-gradient(
+      45deg,
+      rgba(255, 159, 243, 0.1) 0%,
+      rgba(255, 107, 157, 0.1) 25%,
+      rgba(72, 52, 212, 0.1) 50%,
+      rgba(0, 210, 211, 0.1) 75%,
+      rgba(255, 99, 72, 0.1) 100%
+    );
   }
 }
 
-// 调试信息样式
-.debug-info {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: 15px;
-  border-radius: 8px;
-  font-family: monospace;
-  font-size: 12px;
-  z-index: 1000;
-  
-  p {
-    margin: 3px 0;
+@keyframes textGlow {
+  0% {
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  }
+  100% {
+    text-shadow: 0 0 30px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 107, 157, 0.6);
   }
 }
 
-// 响应式适配
+/* 响应式设计 */
 @media (max-width: 768px) {
-  .debug-info {
-    font-size: 10px;
-    padding: 10px;
-    top: 10px;
-    right: 10px;
+  .fluid-shape {
+    filter: blur(40px);
+  }
+  
+  .shape-1 {
+    width: 300px;
+    height: 300px;
+  }
+  
+  .shape-2 {
+    width: 250px;
+    height: 250px;
+  }
+  
+  .shape-3 {
+    width: 350px;
+    height: 250px;
+  }
+  
+  .shape-4 {
+    width: 200px;
+    height: 200px;
+  }
+  
+  .shape-5 {
+    width: 400px;
+    height: 300px;
+  }
+  
+  .content h1 {
+    font-size: 2rem;
+  }
+  
+  .content p {
+    font-size: 1rem;
   }
 }
-</style> 
+
+/* 添加更多动画效果 */
+.fluid-shape:nth-child(odd) {
+  animation-direction: reverse;
+}
+
+.fluid-shape:hover {
+  filter: blur(80px);
+  transform: scale(1.2);
+}
+
+/* 背景粒子效果 */
+.fluid-background::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+    radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+    radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 100px 100px, 150px 150px, 200px 200px;
+  animation: sparkle 10s infinite linear;
+  pointer-events: none;
+}
+
+@keyframes sparkle {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-100px);
+  }
+}
+</style>

@@ -1,7 +1,6 @@
 <template>
 	<div class="trending-page">
-		<!-- 背景渐变 -->
-		<div class="background-gradient"></div>
+		
 
 		<!-- 左侧导航栏 -->
 		<SidebarMenu :active-nav-item="activeNavItem" :user-name="userName" :user-email="userEmail"
@@ -537,7 +536,7 @@ export default {
 				left: '0',
 				width: '100%',
 				height: '100%',
-				background: 'rgba(0, 0, 0, 0.7)', // 半透明黑色遮罩
+				background: 'transparent', // 半透明黑色遮罩
 				zIndex: 400, // 确保在图片云下方
 				borderRadius: '50%', // 圆形遮罩
 				pointerEvents: 'none' // 遮罩层不响应点击
@@ -589,7 +588,7 @@ export default {
 .trending-page {
 	display: flex;
 	min-height: 100vh;
-	background: #000;
+	// background: #000;
 	color: #FFFFFF;
 	font-family: 'BioRhyme', serif;
 	position: relative;
