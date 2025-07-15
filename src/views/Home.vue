@@ -92,7 +92,7 @@
 						</div>
 
 						<div class="content-actions">
-							<button class="learn-more-btn">Learn more</button>
+							<button class="learn-more-btn" @click="$router.push('/newsb')">Learn more</button>
 						</div>
 					</div>
 					<!-- 第3个内容项 -->
@@ -123,7 +123,7 @@
 						</div>
 
 						<div class="content-actions">
-							<button class="learn-more-btn">Learn more</button>
+							<button class="learn-more-btn" @click="$router.push('/newsc')">Learn more</button>
 						</div>
 					</div>
 					<!-- 第4个内容项 -->
@@ -153,7 +153,7 @@
 						</div>
 
 						<div class="content-actions">
-							<button class="learn-more-btn">Learn more</button>
+							<button class="learn-more-btn" @click="$router.push('/newsd')">Learn more</button>
 						</div>
 					</div>
 				</div>

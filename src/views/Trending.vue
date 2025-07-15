@@ -127,7 +127,7 @@ export default {
 			showPizzaSlices: true, // 控制扇形显示隐藏的属性
 			hoveredSlice: null, // 追踪当前hover的扇形区域
 			selectedSlice: null, // 追踪当前选中的扇形区域
-			sidebarVisible: true // 控制左侧栏显示隐藏
+			sidebarVisible: false // 控制左侧栏显示隐藏
 		}
 	},
 	computed: {

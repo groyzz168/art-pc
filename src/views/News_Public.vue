@@ -2671,7 +2671,7 @@
 
 				img {
 					width: 100%;
-					height: 300px;
+					height: auto;
 					object-fit: cover;
 					border-radius: 10px;
 					margin-bottom: 8px;
