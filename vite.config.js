@@ -4,7 +4,6 @@ import { resolve } from 'path'
 
 export default defineConfig({
   plugins: [vue()],
-  base: '/art-pc/',
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src')
