@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '@/views/Home.vue'
 import VeraLogin from '@/views/VeraLogin.vue'
 import Explore from '@/views/Explore.vue'
-import MenuDemo from '@/views/MenuDemo.vue'
 import SocialFeed from '@/views/SocialFeed.vue'
 import News from '@/views/News.vue'
 import NewsBritish from '@/views/News_British.vue'
@@ -21,7 +20,6 @@ const routes = [
   { path: '/login', name: 'login', component: VeraLogin },
   { path: '/home', name: 'Home', component: Home },
   { path: '/explore', name: 'Explore', component: Explore },
-  { path: '/menu-demo', name: 'MenuDemo', component: MenuDemo },
   { path: '/social-feed', name: 'SocialFeed', component: SocialFeed },
   { path: '/news', name: 'News', component: News },
   { path: '/newsb', name: 'Newsb', component: NewsBritish },
