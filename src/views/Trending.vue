@@ -188,11 +188,16 @@ export default {
 			// 设置当前hover的扇形区域
 			if (isHover) {
 				this.hoveredSlice = index
+				// 新增：hover时显示弹窗
+				this.selectedSlice = index
+				this.popupExpanded = false
+				console.log('Hovered slice:', index, 'showing popup')
 			} else {
 				// 只有当前hover的扇形离开时才清除hoveredSlice
 				if (this.hoveredSlice === index) {
 					this.hoveredSlice = null
 				}
+				// 移除：不再在离开hover时隐藏弹窗
 			}
 		},
 		handleSliceClick(slice, index, event) {
@@ -239,14 +244,17 @@ export default {
 			if (isHover) {
 				const image = this.imageCloud[index]
 				this.hoveredSlice = image.slice
-				console.log('Image hovered - slice:', image.slice, 'hoveredSlice:', this.hoveredSlice)
+				// 新增：hover时显示弹窗
+				this.selectedSlice = image.slice
+				this.popupExpanded = false
+				console.log('Image hovered - slice:', image.slice, 'showing popup')
 			} else {
 				// 只有当前hover的图片离开时才清除hoveredSlice
 				const image = this.imageCloud[index]
 				if (this.hoveredSlice === image.slice) {
 					this.hoveredSlice = null
-					console.log('Image unhovered - hoveredSlice:', this.hoveredSlice)
 				}
+				// 移除：不再在离开hover时隐藏弹窗
 			}
 		},
 		handleImageClick(image, index, event) {

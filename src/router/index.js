@@ -17,6 +17,7 @@ import TestDemo from '@/views/TestDemo.vue'
 import WaveFluidDemo from '@/views/WaveFluidDemo.vue'
 
 const routes = [
+  { path: '/', name: 'main', component: VeraLogin },
   { path: '/login', name: 'login', component: VeraLogin },
   { path: '/home', name: 'Home', component: Home },
   { path: '/explore', name: 'Explore', component: Explore },
